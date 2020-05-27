@@ -3,6 +3,5 @@ CREATE DATABASE recipes_db;
 
 Use recipes_db;
 SELECT * FROM Users;
-
--- Drop Table Users; --
--- delete from Users where id = 4;
+ 
+ alter table Users auto_increment = 4;
