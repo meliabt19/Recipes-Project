@@ -2,10 +2,12 @@
 <html lang="en">
 
 <head>
-  <title>Passport Authentication</title>
+  <title>Recipe Book</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css">
+  <!--<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"></script>-->
   <link href="stylesheets/style.css" rel="stylesheet">
 </head>
 
@@ -22,7 +24,24 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
-        <h2>Welcome <span class="member-name"></span></h2>
+        
+        <div class="grid-x">
+          <div class="cell large-6 medium-6 small-6"><h2>Welcome <span class="member-name"></span></h2></div>
+          <div class="cell large-6 medium-6 small-6">
+            <form id="global-search">
+              <div class="input-group">
+                <input id="search-query" class="input-group-field" type="text">
+                  <div class="input-group-button">
+                    <input type="submit" class="button" value="Search">
+                  </div>
+              </div>
+            </form>
+          </div>
+          <div class="grid-x">
+            <div id="search-results" class="cell">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
