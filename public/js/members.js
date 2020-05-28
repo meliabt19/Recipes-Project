@@ -32,10 +32,9 @@ $(document).ready(function() {
 
           console.log(data);
 
-          $('#search-results').append('<ul></ul>');
-
           for (let i = 0; i < results.length; i++) {
-            $('#search-results ul').append(`<li>${results[i].title}</li>`);
+            const recipe = createRecipeCard(results[i]);
+            $('#search-results').append(recipe);
           }
 
         }
@@ -50,6 +49,22 @@ $(document).ready(function() {
 
 const createRecipeCard = (recipe) => {
   const { id, title, readyInMinutes, servings, sourceUrl } = recipe;
+
+  const image = `${title}-${id}-500x500.jpg`;
+
+  return `<div class="card" style="width: 18rem;">
+            <img src="${image}" class="card-img-top" alt="${title}">
+            <div class="card-body">
+              <h5 class="card-title">${title}</h5>
+              <p class="card-text">Prep Time: ${readyInMinutes}</p>
+              <p class="card-text">Servings: ${servings}</p>
+            </div>
+            <div class="card-body">
+              <a href="#" id="${id}" addToRecipeBook(id) class="card-link">Add</a>
+              <a href="#" class="card-link">Details</a>
+              <a href="${sourceUrl}">Source Link</a>
+            </div>
+          </div>`;
 
 };
 
