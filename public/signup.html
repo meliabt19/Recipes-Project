@@ -22,17 +22,34 @@
         <h2>Sign Up Form</h2>
         <form class="signup">
           <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" class="form-control" id="fname-input" placeholder="First Name">
+            <div style="display: none" id="fname-error-alert" class="alert alert-danger" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span> <span id="fname-error-msg"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" class="form-control" id="lname-input" placeholder="Last Name">
+            <div style="display: none" id="lname-error-alert" class="alert alert-danger" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span> <span id="lname-error-msg"></span>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="email-input" placeholder="Email">
+            <input type="text" class="form-control" id="email-input" placeholder="Email">
+            <div style="display: none" id="email-error-alert" class="alert alert-danger" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span> <span id="email-error-msg"></span>
+            </div>
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
             <input type="password" class="form-control" id="password-input" placeholder="Password">
           </div>
-          <div style="display: none" id="alert" class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span> <span class="msg"></span>
-          </div>
+          
           <button type="submit" class="btn btn-default">Sign Up</button>
         </form>
         <br />
