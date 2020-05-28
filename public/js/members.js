@@ -10,7 +10,7 @@ $(document).ready(function() {
 
   $('#global-search').on('submit', function(event) {
     event.preventDefault();
-
+    
     $('#search-results').empty();
 
     const searchInput = $('#search-query').val();
@@ -51,6 +51,7 @@ $(document).ready(function() {
 });
 
 const createRecipeCard = (recipe) => {
+
   const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
 
   const imageTypeIndex = image.lastIndexOf('.', image.length);
@@ -78,6 +79,7 @@ const createRecipeCard = (recipe) => {
           </div>`;
 
 };
+
 
 const addToRecipeBook = id => {
   event.preventDefault();
