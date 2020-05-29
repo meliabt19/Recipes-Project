@@ -12,84 +12,94 @@
 
     <h1>Adanced Search</h1>
 
-    <form>
+    <form id="advanced-search">
         <div class="form-group row">
+
             <label for="inputEmail3" class="col-sm-2 col-form-label">Dish</label>
             <div class="col-sm-10">
                 <input class="form-control" id="dish">
             </div>
+
         </div>
+
         <fieldset class="form-group">
+
             <div class="row">
                 <legend class="col-form-label col-sm-2 pt-0">Diet</legend>
                 <div class="col-sm-10">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1"
-                            value="Ketogenic" checked>
-                        <label class="form-check-label" for="gridRadios1">
+                        <input class="diet-input" type="radio" name="diet" id="none" value="">
+                        <label class="form-check-label" for="diet">
+                            None
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="diet-input" type="radio" name="diet" id="keto" value="Ketogenic">
+                        <label class="form-check-label" for="diet">
                             Ketogenic
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
-                            value="Vegetarian">
-                        <label class="form-check-label" for="gridRadios2">
+                        <input class="diet-input" type="radio" name="diet" id="vegetarian" value="Vegetarian">
+                        <label class="form-check-label" for="diet">
                             Vegetarian
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="Vegan">
-                        <label class="form-check-label" for="gridRadios2">
+                        <input class="diet-input" type="radio" name="diet" id="vegan" value="Vegan">
+                        <label class="form-check-label" for="diet">
                             Vegan
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
-                            value="Pescetarian">
-                        <label class="form-check-label" for="gridRadios2">
+                        <input class="diet-input" type="radio" name="diet" id="pescetarian" value="Pescetarian">
+                        <label class="form-check-label" for="diet">
                             Pescetarian
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="Paleo">
-                        <label class="form-check-label" for="gridRadios2">
+                        <input class="diet-input" type="radio" name="diet" id="paleo" value="Paleo">
+                        <label class="form-check-label" for="diet">
                             Paleo
                         </label>
                     </div>
                 </div>
             </div>
+
         </fieldset>
+
         <div class="form-group row">
             <div class="col-sm-2">Intolorences:</div>
             <div class="col-sm-10">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="dairy">
-                    <label class="form-check-label" for="gridCheck1">
+                    <input class="form-check-input" type="checkbox" name="allergy" value="dairy">
+                    <label class="form-check-label" for="allergy">
                         Dairy
                     </label>
-                    <input class="form-check-input" type="checkbox" id="gluten">
-                    <label class="form-check-label" for="gridCheck1">
+                    <input class="form-check-input" type="checkbox" name="allergy" value="gluten">
+                    <label class="form-check-label" for="allergy">
                         Gluten
                     </label>
-                    <input class="form-check-input" type="checkbox" id="peanut">
-                    <label class="form-check-label" for="gridCheck1">
+                    <input class="form-check-input" type="checkbox" name="allergy" value="peanut">
+                    <label class="form-check-label" for="allergy">
                         Peanut
                     </label>
-                    <input class="form-check-input" type="checkbox" id="shellfish">
-                    <label class="form-check-label" for="gridCheck1">
+                    <input class="form-check-input" type="checkbox" name="allergy" value="shellfish">
+                    <label class="form-check-label" for="allergy">
                         Shellfish
                     </label>
-                    <input class="form-check-input" type="checkbox" id="soy">
-                    <label class="form-check-label" for="gridCheck1">
+                    <input class="form-check-input" type="checkbox" name="allergy" value="soy">
+                    <label class="form-check-label" for="allergy">
                         Soy
                     </label>
-                    <input class="form-check-input" type="checkbox" id="treenut">
-                    <label class="form-check-label" for="gridCheck1">
+                    <input class="form-check-input" type="checkbox" name="allergy" value="treenut">
+                    <label class="form-check-label" for="allergy">
                         Tree Nut
                     </label>
                 </div>
             </div>
         </div>
+
         <div class="form-group row">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Search</button>
@@ -97,10 +107,16 @@
         </div>
     </form>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+    <div class="container-fluid">
+        <div class="row">
+            <h3 id="no-recipes"></h3>
+            <div id="advanced-search-results">
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
