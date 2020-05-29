@@ -28,8 +28,12 @@ module.exports = function(app) {
     res.sendFile(path.join(__dirname, '../public/members.html'));
   });
 
-  app.get('/search', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/advanced-search.html'));
+  app.get('/details/:recipe_id', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/details.html'));
+  });
+
+  app.get('/:id/steps/:step', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public/steps.html'));
   });
 
 };

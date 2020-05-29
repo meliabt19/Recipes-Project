@@ -1,5 +1,4 @@
 const API_KEY = '520acba345fb4fc582e4496d65f38cef';
-//const API_KEY = process.env.API_KEY;
 
 $(document).ready(function() {
   // This file just does a GET request to figure out which user is logged in
@@ -10,7 +9,7 @@ $(document).ready(function() {
 
   $('#global-search').on('submit', function(event) {
     event.preventDefault();
-    
+
     $('#search-results').empty();
 
     const searchInput = $('#search-query').val();
@@ -50,8 +49,8 @@ $(document).ready(function() {
   });
 });
 
-const createRecipeCard = (recipe) => {
 
+const createRecipeCard = recipe => {
   const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
 
   const imageTypeIndex = image.lastIndexOf('.', image.length);
@@ -81,14 +80,26 @@ const createRecipeCard = (recipe) => {
 };
 
 
+// eslint-disable-next-line no-unused-vars
 const addToRecipeBook = id => {
   event.preventDefault();
   console.log(id);
 };
 
+// eslint-disable-next-line no-unused-vars
 const viewRecipeDetails = id => {
   event.preventDefault();
   console.log(id);
+
+  $.get(`/details/${id}`).then(function() {
+    window.location.replace(`/details/${id}`);
+    // If there's an error, log the error
+  }).catch(handleDetailsErr);
+
+};
+
+const handleDetailsErr = err => {
+  console.log(err);
 };
 
 const validateSearchInput = input => {
