@@ -1,8 +1,4 @@
 # Recipes-Project
-<<<<<<< HEAD
-# Project 2
-## Application Requirements
-=======
 
 Project 2 Requirements if you want to get started.
 
@@ -10,7 +6,6 @@ Project 2 Requirements if you want to get started.
 
 ## Application Requirements
 
->>>>>>> master
 * Must use a Node and Express server
 * Must be backed by a MySQL database and an ORM (not necessarily Sequelize)
 * Must utilize both GET and POST routes for retrieving and adding new data
@@ -32,17 +27,6 @@ Use this [project presentation template](https://docs.google.com/presentation/d/
 * Demo: Show your stuff!
 * Directions for Future Development
 * Links to to the deployed application and the GitHub repository
-<<<<<<< HEAD
-## Grading Metrics
-| Metric    	| Weight |
-| ---       	| ---	|
-| Concept   	| 10%	|
-| Design    	| 20%	|
-| Functionality | 30%	|
-| Collaboration | 30%	|
-| Presentation  | 10%	|
-## Submission on BCS
-=======
 
 ## Grading Metrics
 
@@ -56,7 +40,6 @@ Use this [project presentation template](https://docs.google.com/presentation/d/
 
 ## Submission on BCS
 
->>>>>>> master
 You are required to submit the following:
 * The URL of the deployed application
 * The URL of the GitHub repository

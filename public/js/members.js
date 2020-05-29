@@ -42,8 +42,24 @@ $(document).ready(function() {
     } else {
       console.log('Invalid input.');
     }
+    
+    const info = `https://api.spoonacular.com/recipes/search?query=${id}&number=20&apikey=${API_KEY}`;
+   
+    $.ajax({
+      url: query,
+      success: function(data) {
 
-  });
+        const results = data.results;
+
+        console.log(data);
+
+        for (let i = 0; i < results.length; i++) {
+          const recipe = createRecipeCard(results[i]);
+          $('#search-results').append(recipe);
+        }
+
+      }
+    });
 });
 
 const createRecipeCard = (recipe) => {
