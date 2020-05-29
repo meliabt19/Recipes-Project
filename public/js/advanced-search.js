@@ -2,18 +2,38 @@ const API_KEY = '520acba345fb4fc582e4496d65f38cef';
 
 $(document).ready(() => {
 
-  const dish = $('#dish').val();
-
-  const diet = '';
-
-  const intolerances = ['peanut'];
-  intolOptions = 'soy';
-  intolerances.push(intolOptions);
 
 
-  const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dish}&diet=${diet}&intolerances=${intolerances}&apiKey=${API_KEY}`;
 
 
-  console.log(query);
-  console.log(dish);
+
+
+
+  $('#advanced-search').on('submit', (event) => {
+
+    event.preventDefault();
+
+    const dishInput = $('#dish').val();
+    const dishTrimmed = dishInput.trim();
+    const dishString = dishTrimmed.replace(/ /g, ',+');
+
+    const dietInput = $('input[name=diet]:checked').val();
+
+    const allergyInput = [];
+    $.each($('input[name=\'allergy\']:checked'), function(){
+      allergyInput.push($(this).val());
+    });
+
+    const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&diet=${dietInput}&intolerances=${allergyInput}&apiKey=${API_KEY}`;
+
+    $.ajax({
+      url: query,
+      success: (data) => {
+        console.log(data);
+        console.log(query);
+      }
+    });
+
+  });
+
 });
