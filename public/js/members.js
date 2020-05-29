@@ -1,5 +1,4 @@
 const API_KEY = '520acba345fb4fc582e4496d65f38cef';
-//const API_KEY = process.env.API_KEY;
 
 $(document).ready(function() {
   // This file just does a GET request to figure out which user is logged in
@@ -50,6 +49,7 @@ $(document).ready(function() {
   });
 });
 
+
 const createRecipeCard = recipe => {
   const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
 
@@ -78,6 +78,7 @@ const createRecipeCard = recipe => {
           </div>`;
 
 };
+
 
 // eslint-disable-next-line no-unused-vars
 const addToRecipeBook = id => {
