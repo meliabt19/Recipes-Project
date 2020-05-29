@@ -1,7 +1,8 @@
 const API_KEY = '520acba345fb4fc582e4496d65f38cef';
 
 $(document).ready(function() {
-
+  // This file just does a GET request to figure out which user is logged in
+  // and updates the HTML on the page
   $.get('/api/user_data').then(function(data) {
     $('.member-name').text(data.fname);
   });
@@ -44,24 +45,8 @@ $(document).ready(function() {
     } else {
       console.log('Invalid input.');
     }
-    
-    const info = `https://api.spoonacular.com/recipes/search?query=${id}&number=20&apikey=${API_KEY}`;
-   
-    $.ajax({
-      url: query,
-      success: function(data) {
 
-        const results = data.results;
-
-        console.log(data);
-
-        for (let i = 0; i < results.length; i++) {
-          const recipe = createRecipeCard(results[i]);
-          $('#search-results').append(recipe);
-        }
-
-      }
-    });
+  });
 });
 
 
