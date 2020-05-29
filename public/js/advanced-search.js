@@ -22,15 +22,22 @@ $(document).ready(() => {
     $.ajax({
       url: query,
       success: (data) => {
-        console.log(data);
-        const results = data.results;
 
-        results.forEach(rec => {
-          const recipe = createRecipeCard(rec);
-          $('#advanced-search-results').append(recipe);
-        });
+        const {length} = data.results;
+
+        if (length === 0) {
+          $('#no-recipes').text('No found recipes, try again...');
+        } else{
+          const results = data.results;
+
+          results.forEach(rec => {
+            const recipe = createRecipeCard(rec);
+            $('#advanced-search-results').append(recipe);
+          });
+        }
 
       }
+
     });
 
   });
