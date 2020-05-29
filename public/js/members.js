@@ -50,7 +50,7 @@ $(document).ready(function() {
   });
 });
 
-const createRecipeCard = (recipe) => {
+const createRecipeCard = recipe => {
   const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
 
   const imageTypeIndex = image.lastIndexOf('.', image.length);
@@ -79,14 +79,26 @@ const createRecipeCard = (recipe) => {
 
 };
 
+// eslint-disable-next-line no-unused-vars
 const addToRecipeBook = id => {
   event.preventDefault();
   console.log(id);
 };
 
+// eslint-disable-next-line no-unused-vars
 const viewRecipeDetails = id => {
   event.preventDefault();
   console.log(id);
+
+  $.get(`/details/${id}`).then(function() {
+    window.location.replace(`/details/${id}`);
+    // If there's an error, log the error
+  }).catch(handleDetailsErr);
+
+};
+
+const handleDetailsErr = err => {
+  console.log(err);
 };
 
 const validateSearchInput = input => {
