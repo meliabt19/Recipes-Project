@@ -16,6 +16,9 @@
       <a class="navbar-brand" href="/logout">
         Logout
       </a>
+      <a class="navbar-brand link" href="/advanced-search">
+        Advanced Search
+      </a>
     </div>
   </div>
 </nav>
@@ -29,6 +32,10 @@
           <input id="search-query" class="form-control mb-2 mr-sm-2" placeholder="Search Recipes">        
           <button type="submit" class="btn btn-primary my-1">Search</button>
         </form>
+        <div style="display: none" id="search-error-alert" class="alert alert-danger" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span> <span id="search-error-msg"></span>
+        </div>
       </div>   
     </div>
     <div class="row">
