@@ -1,4 +1,4 @@
-const API_KEY = '520acba345fb4fc582e4496d65f38cef';
+const API_KEY = 'e88644c6c9354e7795a330f1d321bc90';
 
 $(document).ready(() => {
 
@@ -7,31 +7,36 @@ $(document).ready(() => {
     event.preventDefault();
 
     const dishInput = $('#dish').val();
+    const validInput = validateSearchInput(dishInput);
     const dishTrimmed = dishInput.trim();
     const dishString = dishTrimmed.replace(/ /g, ',+');
 
-    const dietInput = $('input[name=diet]:checked').val();
+    if (validInput) {
+      const dietInput = $('input[name=diet]:checked').val();
 
-    const allergyInput = [];
-    $.each($('input[name=\'allergy\']:checked'), function(){
-      allergyInput.push($(this).val());
-    });
+      const allergyInput = [];
+      $.each($('input[name=\'allergy\']:checked'), function(){
+        allergyInput.push($(this).val());
+      });
 
-    const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&diet=${dietInput}&intolerances=${allergyInput}&apiKey=${API_KEY}`;
+      const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&diet=${dietInput}&intolerances=${allergyInput}&apiKey=${API_KEY}`;
 
-    $.ajax({
-      url: query,
-      success: (data) => {
-        console.log(data);
-        const results = data.results;
+      $.ajax({
+        url: query,
+        success: (data) => {
+          console.log(data);
+          const results = data.results;
 
-        results.forEach(rec => {
-          const recipe = createRecipeCard(rec);
-          $('#advanced-search-results').append(recipe);
-        });
+          results.forEach(rec => {
+            const recipe = createRecipeCard(rec);
+            $('#advanced-search-results').append(recipe);
+          });
 
-      }
-    });
+        }
+      });
+    } else {
+      alert('Invalid Input');
+    }
 
   });
 
@@ -73,6 +78,12 @@ $(document).ready(() => {
   const viewRecipeDetails = id => {
     event.preventDefault();
     console.log(id);
+  };
+
+  const validateSearchInput = input => {
+    var rmSp = input.trim();
+    var result = rmSp.search(/^[A-Za-z\s']+$/); //check to make sure the input is alphabetical
+    return (result === 0 ? true : false); //return true if it is alphabetical, false if not
   };
 
 });
