@@ -1,5 +1,3 @@
-const API_KEY = 'ae817b3f66f04aa9b0c8c91f21d78ecd';
-
 $(document).ready(function() {
 
   const url = window.location;
@@ -18,63 +16,16 @@ $(document).ready(function() {
 
   $('#step').text(step);
 
-  const query = `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?apiKey=${API_KEY}`;
-
-  console.log(query);
-
   let storedRecipe = window.localStorage.getItem(id);
+  storedRecipe = JSON.parse(storedRecipe);
 
-  if (storedRecipe === null) {
+  const currentStepDetails = storedRecipe.find(({number}) => number === step);
+  console.log('currentStepDetails', currentStepDetails);
 
-    //If recipe is not stored in localStorage, retrieve it:
-    let stepsArray = [];
+  const lastStep = checkForLastStep(step, storedRecipe);
 
-    $.ajax({
-      url: query,
-      success: function(data) {
-
-        console.log(data);
-
-        console.log(data.length);
-        const stepsList = data[0].steps;
-
-        for (let i = 0; i < stepsList.length; i++) {
-          stepsArray.push(stepsList[i]);
-        }
-
-      }
-    }).then(() => {
-
-      window.localStorage.setItem(id, JSON.stringify(stepsArray));
-
-      storedRecipe = window.localStorage.getItem(id);
-      storedRecipe = JSON.parse(storedRecipe);
-
-      const currentStepDetails = storedRecipe.find(({number}) => number === step);
-      console.log('currentStepDetails', currentStepDetails);
-
-      const lastStep = checkForLastStep(step, storedRecipe);
-
-      if (lastStep === true) {
-        $('#next-step').text('Done');
-      }
-
-    });
-
-  } else {
-
-    //Use recipe stored in localStorage:
-    storedRecipe = JSON.parse(storedRecipe);
-
-    const currentStepDetails = storedRecipe.find(({number}) => number === step);
-    console.log('currentStepDetails', currentStepDetails);
-
-    const lastStep = checkForLastStep(step, storedRecipe);
-
-    if (lastStep === true) {
-      $('#next-step').text('Done');
-    }
-
+  if (lastStep === true) {
+    $('#next-step').text('Done');
   }
 
   $('#next-step').on('click', function() {
