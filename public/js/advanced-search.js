@@ -72,14 +72,4 @@ $(document).ready(() => {
 
   };
 
-  const addToRecipeBook = id => {
-    event.preventDefault();
-    console.log(id);
-  };
-
-  const viewRecipeDetails = id => {
-    event.preventDefault();
-    console.log(id);
-  };
-
 });
