@@ -25,7 +25,7 @@ $(document).ready(function() {
     $.ajax({
       url: query,
       success: function(data) {
-
+        
         console.log(data);
 
         if (data.length > 0) {
@@ -42,8 +42,8 @@ $(document).ready(function() {
             // If there's an error, log the error
           }).catch(handleDetailsErr);
         } else {
-          // If the recipe is not available, alert the user with a modal:
-          alert('The recipe for this meal is not available.');
+           // If the recipe is not available, alert the user with a modal:
+           alert('The recipe for this meal is not available.');
         }
 
       }
