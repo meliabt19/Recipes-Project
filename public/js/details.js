@@ -1,4 +1,5 @@
-const API_KEY = 'ae817b3f66f04aa9b0c8c91f21d78ecd';
+
+const API_KEY = '520acba345fb4fc582e4496d65f38cef';
 
 $(document).ready(function() {
   // This file just does a GET request to figure out which user is logged in
