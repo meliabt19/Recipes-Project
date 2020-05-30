@@ -1,14 +1,37 @@
-const API_KEY = 'e88644c6c9354e7795a330f1d321bc90';
+const API_KEY = '520acba345fb4fc582e4496d65f38cef';
 
 $(document).ready(() => {
 
   $('#advanced-search').on('submit', (event) => {
 
     event.preventDefault();
+    $('#advanced-search-results').empty();
 
     const dishInput = $('#dish').val();
+
+    const validInput = validateSearchInput(dishInput);
+
+    if (validInput) {
+      hideError('#search-error-alert');
+    } else {
+      textInputError('#search-error-alert', '#search-error-msg', 'Invalid search field. Must be alphabetical and cannot contain punctuation marks.');
+      return;
+    }
+
     const dishTrimmed = dishInput.trim();
     const dishString = dishTrimmed.replace(/ /g, ',+');
+
+    const prepTimeInput = $('#prep-time').val();
+
+    let prepTime;
+
+    if (prepTimeInput !== 'any') {
+      prepTime = prepTimeInput;
+    } else {
+      prepTime = null;
+    }
+
+    console.log('prepTime: ' + prepTime);
 
     const dietInput = $('input[name=diet]:checked').val();
 
@@ -17,7 +40,7 @@ $(document).ready(() => {
       allergyInput.push($(this).val());
     });
 
-    const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&diet=${dietInput}&intolerances=${allergyInput}&apiKey=${API_KEY}`;
+    const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&maxReadyTime=${prepTime}&addRecipeInformation=true&instructionsRequired=true&diet=${dietInput}&intolerances=${allergyInput}&apiKey=${API_KEY}`;
 
     $.ajax({
       url: query,
@@ -42,19 +65,30 @@ $(document).ready(() => {
 
   });
 
-  const createRecipeCard = (recipe) => {
+});
 
-    const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
+const textInputError = (type, messageContainer, message) => {
+  $(type + ' ' + messageContainer).text(message);
+  $(type).fadeIn(500);
+};
 
-    const imageTypeIndex = image.lastIndexOf('.', image.length);
+const hideError = type => {
+  $(type).hide();
+};
 
-    const imageType = image.substring(imageTypeIndex);
+const createRecipeCard = (recipe) => {
 
-    const imageSize = '480x360';
+  const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
 
-    const imagePath = `https://spoonacular.com/recipeImages/${id}-${imageSize}${imageType}`;
+  const imageTypeIndex = image.lastIndexOf('.', image.length);
 
-    return `<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+  const imageType = image.substring(imageTypeIndex);
+
+  const imageSize = '480x360';
+
+  const imagePath = `https://spoonacular.com/recipeImages/${id}-${imageSize}${imageType}`;
+
+  return `<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
               <div class="card">
                 <img src="${imagePath}" class="card-img-top img-fluid" alt="${title}">
                 <div class="card-body">
@@ -70,18 +104,32 @@ $(document).ready(() => {
               </div>
             </div>`;
 
-  };
+};
 
-  // eslint-disable-next-line no-unused-vars
-  const addToRecipeBook = id => {
-    event.preventDefault();
-    console.log(id);
-  };
+ // eslint-disable-next-line no-unused-vars
+const addToRecipeBook = id => {
+  event.preventDefault();
+  console.log(id);
+};
 
-  // eslint-disable-next-line no-unused-vars
-  const viewRecipeDetails = id => {
-    event.preventDefault();
-    console.log(id);
-  };
+// eslint-disable-next-line no-unused-vars
+const viewRecipeDetails = id => {
+  event.preventDefault();
+  console.log(id);
 
-});
+  $.get(`/details/${id}`).then(function() {
+    window.location.replace(`/details/${id}`);
+    // If there's an error, log the error
+  }).catch(handleDetailsErr);
+
+};
+
+const handleDetailsErr = err => {
+  console.log(err);
+};
+
+const validateSearchInput = input => {
+  var rmSp = input.trim();
+  var result = rmSp.search(/^[A-Za-z\s']+$/); //check to make sure the input is alphabetical
+  return (result === 0 ? true : false); //return true if it is alphabetical, false if not
+};
