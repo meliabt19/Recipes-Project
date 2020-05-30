@@ -5,19 +5,39 @@ $(document).ready(() => {
   $('#advanced-search').on('submit', (event) => {
 
     event.preventDefault();
+    $('advanced-search-results').empty();
 
+    // Query string
     const dishInput = $('#dish').val();
     const dishTrimmed = dishInput.trim();
     const dishString = dishTrimmed.replace(/ /g, ',+');
 
+    // Cuisine
+    const cuisine = $('#cuisine').val();
+    console.log(cuisine);
+
+    // Diet
     const dietInput = $('input[name=diet]:checked').val();
 
+    // Intolorances
     const allergyInput = [];
     $.each($('input[name=\'allergy\']:checked'), function(){
       allergyInput.push($(this).val());
     });
 
-    const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&diet=${dietInput}&intolerances=${allergyInput}&apiKey=${API_KEY}`;
+    const prepTime = 15;
+    const maxCalories = 1000;
+    const maxCarbs = 150;
+    const maxFat = 600;
+    const maxSaturatedFat = 500;
+    const maxCholesterol = 1000;
+    const maxFiber = 1000;
+    const maxSodium = 500;
+    const maxSugar = 100;
+
+    const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&cuisine=${cuisine}&maxReadyTime=${prepTime}&diet=${dietInput}&maxCalories=${maxCalories}&maxSugar=${maxSugar}&intolerances=${allergyInput}&maxFat${maxFat}&maxSaturatedFat=${maxSaturatedFat}&maxCholestero=${maxCholesterol}&maxFiber=${maxFiber}&maxCarbs${maxCarbs}&maxSodium=${maxSodium}&instructionsRequired=true&addRecipeInformation=true&sort=popularity&sort=desc&number=20&apiKey=${API_KEY}`;
+
+    console.log(query);
 
     $.ajax({
       url: query,
