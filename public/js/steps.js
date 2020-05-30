@@ -24,9 +24,7 @@ $(document).ready(function() {
 
   let storedRecipe = window.localStorage.getItem(id);
 
-  console.log('storedRecipe', storedRecipe);
-
-  if (storedRecipe === undefined) {
+  if (storedRecipe === null) {
 
     //If recipe is not stored in localStorage, retrieve it:
     let stepsArray = [];
@@ -37,6 +35,7 @@ $(document).ready(function() {
 
         console.log(data);
 
+        console.log(data.length);
         const stepsList = data[0].steps;
 
         for (let i = 0; i < stepsList.length; i++) {
@@ -48,6 +47,7 @@ $(document).ready(function() {
 
       window.localStorage.setItem(id, JSON.stringify(stepsArray));
 
+      storedRecipe = window.localStorage.getItem(id);
       storedRecipe = JSON.parse(storedRecipe);
 
       const currentStepDetails = storedRecipe.find(({number}) => number === step);
@@ -78,11 +78,15 @@ $(document).ready(function() {
   }
 
   $('#next-step').on('click', function() {
-    console.log('current step: ', step);
-    const nextStep = (step + 1);
-    console.log('next step: ', nextStep);
 
-    const nextStepDetails = stepsArray.find(({number}) => number === nextStep);
+    event.preventDefault();
+
+    let storedRecipe = window.localStorage.getItem(id);
+    storedRecipe = JSON.parse(storedRecipe);
+
+    const nextStep = (step + 1);
+
+    const nextStepDetails = storedRecipe.find(({number}) => number === nextStep);
 
     console.log('nextStepDetails', nextStepDetails);
 
@@ -97,17 +101,22 @@ $(document).ready(function() {
       }).catch(handleStepsErr);
 
     } else {
-      window.localStorage.removeItem(id);
+      // Finished recipe steps
+      window.localStorage.clear();
       window.location.replace('/members');
     }
   });
 
   $('#previous-step').on('click', function() {
+
+    let storedRecipe = window.localStorage.getItem(id);
+    storedRecipe = JSON.parse(storedRecipe);
+
     console.log('current step: ', step);
     const previousStep = (step - 1);
     console.log('previous step: ', previousStep);
 
-    const previousStepDetails = stepsArray.find(({number}) => number === previousStep);
+    const previousStepDetails = storedRecipe.find(({number}) => number === previousStep);
 
     console.log('previousStepDetails', previousStepDetails);
 
@@ -126,21 +135,21 @@ $(document).ready(function() {
     }
   });
 
-  const checkForLastStep = (step, storedRecipe) => {
-
-    const lastStep = (storedRecipe.length);
-    console.log('last step: ', lastStep);
-    console.log('current step: ', step);
-
-    //last step cook
-    if (step === lastStep) {
-      return true;
-    }
-
-    return false;
-  };
-
 });
+
+const checkForLastStep = (step, storedRecipe) => {
+
+  const lastStep = (storedRecipe.length);
+  console.log('last step: ', lastStep);
+  console.log('current step: ', step);
+
+  //last step cook
+  if (step === lastStep) {
+    return true;
+  }
+
+  return false;
+};
 
 const handleStepsErr = err => {
   console.log(err);

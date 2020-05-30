@@ -72,11 +72,13 @@ $(document).ready(() => {
 
   };
 
+  // eslint-disable-next-line no-unused-vars
   const addToRecipeBook = id => {
     event.preventDefault();
     console.log(id);
   };
 
+  // eslint-disable-next-line no-unused-vars
   const viewRecipeDetails = id => {
     event.preventDefault();
     console.log(id);
