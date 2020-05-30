@@ -26,7 +26,7 @@
 
             <label class="col-sm-2 col-form-label">Cuisine</label>
             <div class="col-sm-10">
-                <select id="cuisine" class="form-control" id="exampleFormControlSelect1">
+                <select id="cuisine" class="form-control">
                     <option value="African">African</option>
                     <option value="American">American</option>
                     <option value="British">British</option>
@@ -58,48 +58,41 @@
 
         </div>
 
-        <fieldset class="form-group">
+        <fieldset class="form-group row">
 
-            <div class="row">
-                <legend class="col-form-label col-sm-2 pt-0">Diet</legend>
-                <div class="col-sm-10">
-                    <div class="form-check">
-                        <input class="diet-input" type="radio" name="diet" id="none" value="">
-                        <label class="form-check-label" for="diet">
-                            None
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="diet-input" type="radio" name="diet" id="keto" value="Ketogenic">
-                        <label class="form-check-label" for="diet">
-                            Ketogenic
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="diet-input" type="radio" name="diet" id="vegetarian" value="Vegetarian">
-                        <label class="form-check-label" for="diet">
-                            Vegetarian
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="diet-input" type="radio" name="diet" id="vegan" value="Vegan">
-                        <label class="form-check-label" for="diet">
-                            Vegan
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="diet-input" type="radio" name="diet" id="pescetarian" value="Pescetarian">
-                        <label class="form-check-label" for="diet">
-                            Pescetarian
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="diet-input" type="radio" name="diet" id="paleo" value="Paleo">
-                        <label class="form-check-label" for="diet">
-                            Paleo
-                        </label>
-                    </div>
-                </div>
+            <label class="col-sm-2 col-form-label">Diet</label>
+            <div class="col-sm-10">
+
+                <input class="diet-input" type="radio" name="diet" id="none" value="">
+                <label class="form-check-label" for="diet">
+                    None
+                </label>
+
+                <input class="diet-input" type="radio" name="diet" id="keto" value="Ketogenic">
+                <label class="form-check-label" for="diet">
+                    Ketogenic
+                </label>
+
+                <input class="diet-input" type="radio" name="diet" id="vegetarian" value="Vegetarian">
+                <label class="form-check-label" for="diet">
+                    Vegetarian
+                </label>
+
+                <input class="diet-input" type="radio" name="diet" id="vegan" value="Vegan">
+                <label class="form-check-label" for="diet">
+                    Vegan
+                </label>
+
+                <input class="diet-input" type="radio" name="diet" id="pescetarian" value="Pescetarian">
+                <label class="form-check-label" for="diet">
+                    Pescetarian
+                </label>
+
+                <input class="diet-input" type="radio" name="diet" id="paleo" value="Paleo">
+                <label class="form-check-label" for="diet">
+                    Paleo
+                </label>
+
             </div>
 
         </fieldset>
