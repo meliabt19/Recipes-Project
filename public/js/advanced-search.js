@@ -14,7 +14,6 @@ $(document).ready(() => {
 
     // Cuisine
     const cuisine = $('#cuisine').val();
-    console.log(cuisine);
 
     // Diet
     const dietInput = $('input[name=diet]:checked').val();
@@ -25,7 +24,9 @@ $(document).ready(() => {
       allergyInput.push($(this).val());
     });
 
-    const prepTime = 15;
+    // Max ready time
+    const prepTime = $('#prep-time').val();
+
     const maxCalories = 1000;
     const maxCarbs = 150;
     const maxFat = 600;
