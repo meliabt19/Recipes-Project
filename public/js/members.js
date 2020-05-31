@@ -45,7 +45,6 @@ $(document).ready(function() {
     } else {
       console.log('Invalid input.');
     }
-
   });
 });
 
