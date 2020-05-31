@@ -11,18 +11,26 @@
 
 <body>
   <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/logout">
-        Logout
-      </a>
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/logout">
+          Logout
+        </a>
+        <a class="navbar-brand link" href="/advanced-search">
+          Advanced Search
+        </a>
+        <a class="navbar-brand link" href="/members">
+          My Recipes
+        </a>
+
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
   <div class="container-fluid">
     <div class="row">
         <h2>Recipe Details</h2>
         <p id="recipe-id"></p>
+        <button type="button" id="previous" class="btn btn-primary my-1">Go Back</button>
         <button id="start-cooking" type="submit" class="btn btn-primary my-1">Start Cooking</button>
     </div>
   </div>

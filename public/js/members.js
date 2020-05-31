@@ -17,6 +17,7 @@ $(document).ready(function() {
     const validInput = validateSearchInput(searchInput);
 
     if (validInput) {
+      hideError('#search-error-alert');
 
       const searchTrim = searchInput.trim();
 
@@ -32,37 +33,61 @@ $(document).ready(function() {
 
           const results = data.results;
 
-          console.log(data);
+          if (results.length === 0) {
+            $('#search-results').html('<div class="col-sm-3"><h4>No results found.</h4></div>');
+          } else {
 
-          for (let i = 0; i < results.length; i++) {
-            const recipe = createRecipeCard(results[i]);
-            $('#search-results').append(recipe);
+            for (let i = 0; i < results.length; i++) {
+              const recipe = createRecipeCard(results[i]);
+              $('#search-results').append(recipe);
+            }
+
           }
 
         }
       });
 
     } else {
-      console.log('Invalid input.');
+      textInputError('#search-error-alert', '#search-error-msg', 'Invalid search field. Must be alphabetical and cannot contain punctuation marks.');
     }
   });
 });
 
+const textInputError = (type, messageContainer, message) => {
+  $(type + ' ' + messageContainer).text(message);
+  $(type).fadeIn(500);
+};
+
+const hideError = type => {
+  $(type).hide();
+};
 
 const createRecipeCard = recipe => {
   const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
 
-  const imageTypeIndex = image.lastIndexOf('.', image.length);
+  let imgTag;
 
-  const imageType = image.substring(imageTypeIndex);
+  if (image !== undefined) {
 
-  const imageSize = '480x360';
+    const imageTypeIndex = image.lastIndexOf('.', image.length);
 
-  const imagePath = `https://spoonacular.com/recipeImages/${id}-${imageSize}${imageType}`;
+    const imageType = image.substring(imageTypeIndex);
+
+    const imageSize = '480x360';
+
+    const imagePath = `https://spoonacular.com/recipeImages/${id}-${imageSize}${imageType}`;
+
+    imgTag = `<img src="${imagePath}" class="card-img-top img-fluid" alt="${title}">`;
+
+  } else {
+
+    imgTag = '<img src="https://via.placeholder.com/480x360.png?text=Image+Not+Available" class="img-fluid" title="Image not available">';
+
+  }
 
   return `<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
             <div class="card">
-              <img src="${imagePath}" class="card-img-top img-fluid" alt="${title}">
+              ${imgTag}
               <div class="card-body">
                 <h4 class="card-title">${title}</h4>
                 <p class="card-text">Prep Time: ${readyInMinutes} minutes</p>
@@ -77,7 +102,6 @@ const createRecipeCard = recipe => {
           </div>`;
 
 };
-
 
 // eslint-disable-next-line no-unused-vars
 const addToRecipeBook = id => {

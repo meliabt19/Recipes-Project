@@ -11,6 +11,15 @@ module.exports = function(app) {
     if (req.user) {
       res.redirect('/members');
     }
+    res.redirect('/login');
+    res.sendFile(path.join(__dirname, '../public/login.html'));
+  });
+
+  app.get('/signup', function(req, res) {
+    // If the user already has an account send them to the members page
+    if (req.user) {
+      res.redirect('/members');
+    }
     res.sendFile(path.join(__dirname, '../public/signup.html'));
   });
 
@@ -29,11 +38,24 @@ module.exports = function(app) {
   });
 
   app.get('/details/:recipe_id', function(req, res) {
+    if (!req.user) {
+      res.redirect('/login');
+    }
     res.sendFile(path.join(__dirname, '../public/details.html'));
   });
 
   app.get('/:id/steps/:step', function(req, res) {
+    if (!req.user) {
+      res.redirect('/login');
+    }
     res.sendFile(path.join(__dirname, '../public/steps.html'));
+  });
+
+  app.get('/advanced-search', function(req, res) {
+    if (!req.user) {
+      res.redirect('/login');
+    }
+    res.sendFile(path.join(__dirname, '../public/advanced-search.html'));
   });
 
 };

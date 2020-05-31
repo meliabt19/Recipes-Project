@@ -1,5 +1,3 @@
-const API_KEY = '520acba345fb4fc582e4496d65f38cef';
-
 $(document).ready(function() {
 
   const url = window.location;
@@ -18,71 +16,28 @@ $(document).ready(function() {
 
   $('#step').text(step);
 
-  const query = `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?apiKey=${API_KEY}`;
-
-  console.log(query);
-
   let storedRecipe = window.localStorage.getItem(id);
+  storedRecipe = JSON.parse(storedRecipe);
 
-  console.log('storedRecipe', storedRecipe);
+  const currentStepDetails = storedRecipe.find(({number}) => number === step);
+  console.log('currentStepDetails', currentStepDetails);
 
-  if (storedRecipe === undefined) {
+  const lastStep = checkForLastStep(step, storedRecipe);
 
-    //If recipe is not stored in localStorage, retrieve it:
-    let stepsArray = [];
-
-    $.ajax({
-      url: query,
-      success: function(data) {
-
-        console.log(data);
-
-        const stepsList = data[0].steps;
-
-        for (let i = 0; i < stepsList.length; i++) {
-          stepsArray.push(stepsList[i]);
-        }
-
-      }
-    }).then(() => {
-
-      window.localStorage.setItem(id, JSON.stringify(stepsArray));
-
-      storedRecipe = JSON.parse(storedRecipe);
-
-      const currentStepDetails = storedRecipe.find(({number}) => number === step);
-      console.log('currentStepDetails', currentStepDetails);
-
-      const lastStep = checkForLastStep(step, storedRecipe);
-
-      if (lastStep === true) {
-        $('#next-step').text('Done');
-      }
-
-    });
-
-  } else {
-
-    //Use recipe stored in localStorage:
-    storedRecipe = JSON.parse(storedRecipe);
-
-    const currentStepDetails = storedRecipe.find(({number}) => number === step);
-    console.log('currentStepDetails', currentStepDetails);
-
-    const lastStep = checkForLastStep(step, storedRecipe);
-
-    if (lastStep === true) {
-      $('#next-step').text('Done');
-    }
-
+  if (lastStep === true) {
+    $('#next-step').text('Done');
   }
 
   $('#next-step').on('click', function() {
-    console.log('current step: ', step);
-    const nextStep = (step + 1);
-    console.log('next step: ', nextStep);
 
-    const nextStepDetails = stepsArray.find(({number}) => number === nextStep);
+    event.preventDefault();
+
+    let storedRecipe = window.localStorage.getItem(id);
+    storedRecipe = JSON.parse(storedRecipe);
+
+    const nextStep = (step + 1);
+
+    const nextStepDetails = storedRecipe.find(({number}) => number === nextStep);
 
     console.log('nextStepDetails', nextStepDetails);
 
@@ -97,17 +52,22 @@ $(document).ready(function() {
       }).catch(handleStepsErr);
 
     } else {
-      window.localStorage.removeItem(id);
+      // Finished recipe steps
+      window.localStorage.clear();
       window.location.replace('/members');
     }
   });
 
   $('#previous-step').on('click', function() {
+
+    let storedRecipe = window.localStorage.getItem(id);
+    storedRecipe = JSON.parse(storedRecipe);
+
     console.log('current step: ', step);
     const previousStep = (step - 1);
     console.log('previous step: ', previousStep);
 
-    const previousStepDetails = stepsArray.find(({number}) => number === previousStep);
+    const previousStepDetails = storedRecipe.find(({number}) => number === previousStep);
 
     console.log('previousStepDetails', previousStepDetails);
 
@@ -126,21 +86,21 @@ $(document).ready(function() {
     }
   });
 
-  const checkForLastStep = (step, storedRecipe) => {
-
-    const lastStep = (storedRecipe.length);
-    console.log('last step: ', lastStep);
-    console.log('current step: ', step);
-
-    //last step cook
-    if (step === lastStep) {
-      return true;
-    }
-
-    return false;
-  };
-
 });
+
+const checkForLastStep = (step, storedRecipe) => {
+
+  const lastStep = (storedRecipe.length);
+  console.log('last step: ', lastStep);
+  console.log('current step: ', step);
+
+  //last step cook
+  if (step === lastStep) {
+    return true;
+  }
+
+  return false;
+};
 
 const handleStepsErr = err => {
   console.log(err);
