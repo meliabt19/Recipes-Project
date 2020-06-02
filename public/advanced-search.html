@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/stylesheets/style.css">
+    <link rel="stylesheet" href="../public/stylesheets/advanced-search.css">
     <title>Advanced Search</title>
 </head>
 
@@ -25,7 +27,7 @@
         <!--Query string-->
         <div class="form-group row">
 
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Dish</label>
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Dish:</label>
             <div class="col-sm-10">
                 <input class="form-control" id="dish">
             </div>
@@ -35,7 +37,7 @@
         <!--Cuisine-->
         <div class="form-group row">
 
-            <label class="col-sm-2 col-form-label">Cuisine</label>
+            <label class="col-sm-2 col-form-label">Cuisine:</label>
             <div class="col-sm-10">
                 <select id="cuisine" class="form-control">
                     <option value="">None</option>
@@ -73,7 +75,7 @@
         <!--Prep time-->
         <div class="form-group row">
 
-            <label class="col-sm-2 col-form-label">Prep Time</label>
+            <label class="col-sm-2 col-form-label">Prep Time:</label>
             <div class="col-sm-10">
                 <select id="prep-time" class="form-control">
                     <option value="10">10</option>
@@ -96,21 +98,24 @@
         <!--Max calories-->
         <div class="form-group row">
 
-            <label class="col-sm-2 col-form-label">Calories</label>
+            <label class="col-sm-2 col-form-label">Calories:</label>
             <div class="col-sm-10">
                 <div class="slidecontainer">
-                    <input type="range" min="50" max="2000" value="50" class="slider" id="cal-range">
+                    <input type="range" min="0" max="2000" value="50" class="slider" id="cal-range">
+                    <div id="cal-output"></div>
                 </div>
             </div>
+
         </div>
 
         <!--Max carbs-->
         <div class="form-group row">
 
-            <label class="col-sm-2 col-form-label">Carbs</label>
+            <label class="col-sm-2 col-form-label">Carbs:</label>
             <div class="col-sm-10">
                 <div class="slidecontainer">
                     <input type="range" min="0" max="800" value="50" class="slider" id="carb-range">
+                    <div id="carb-output"></div>
                 </div>
             </div>
 
@@ -119,10 +124,11 @@
         <!--Max fat-->
         <div class="form-group row">
 
-            <label class="col-sm-2 col-form-label">Fat</label>
+            <label class="col-sm-2 col-form-label">Fat:</label>
             <div class="col-sm-10">
                 <div class="slidecontainer">
                     <input type="range" min="0" max="800" value="50" class="slider" id="fat-range">
+                    <div id="fat-output"></div>
                 </div>
             </div>
 
@@ -131,7 +137,7 @@
         <!--Diet-->
         <fieldset class="form-group row">
 
-            <label class="col-sm-2 col-form-label">Diet</label>
+            <label class="col-sm-2 col-form-label">Diet:</label>
             <div class="col-sm-10">
 
                 <input class="diet-input" type="radio" name="diet" id="none" value="">
@@ -202,8 +208,8 @@
         </div>
 
         <!--Search Button-->
-        <div class="form-group row">
-            <div class="col-sm-10">
+        <div class="row text-center">
+            <div class="col-12">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </div>

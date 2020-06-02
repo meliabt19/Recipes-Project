@@ -2,6 +2,31 @@ const API_KEY = 'e88644c6c9354e7795a330f1d321bc90';
 
 $(document).ready(() => {
 
+  // Max calories slider
+  const calSlider = $('#cal-range');
+  const calOutput = $('#cal-output');
+  calOutput.text(calSlider.val());
+  calSlider.on('input', function() {
+    calOutput.text($(this).val());
+  });
+
+  // Max carb slider
+  const carbSlider = $('#carb-range');
+  const carbOutput = $('#carb-output');
+  carbOutput.text(calSlider.val());
+  carbSlider.on('input', function() {
+    carbOutput.text($(this).val());
+  });
+
+  // Max fat slider
+  const fatSlider = $('#fat-range');
+  const fatOutput = $('#fat-output');
+  fatOutput.text(fatSlider.val());
+  fatSlider.on('input', function() {
+    fatOutput.text($(this).val());
+  });
+
+
   $('#advanced-search').on('submit', (event) => {
 
     event.preventDefault();
@@ -27,9 +52,19 @@ $(document).ready(() => {
     // Max ready time
     const prepTime = $('#prep-time').val();
 
-    const maxCalories = 1000;
-    const maxCarbs = 150;
-    const maxFat = 600;
+    // Max calories
+    const maxCalories = calOutput.text();
+
+    // Max carbs
+    const maxCarbs = carbOutput.text();
+
+    // Max fat
+    const maxFat = fatOutput.text();
+
+
+
+
+
     const maxSaturatedFat = 500;
     const maxCholesterol = 1000;
     const maxFiber = 1000;
