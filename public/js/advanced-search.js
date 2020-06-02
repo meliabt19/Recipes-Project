@@ -106,7 +106,7 @@ const createRecipeCard = (recipe) => {
 
 };
 
-// eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
 const addToRecipeBook = id => {
   event.preventDefault();
   console.log(id);
