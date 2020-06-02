@@ -1,3 +1,5 @@
+const API_KEY = '520acba345fb4fc582e4496d65f38cef';
+
 $(document).ready(function() {
 
   const url = window.location;
@@ -17,15 +19,23 @@ $(document).ready(function() {
   $('#step').text(step);
 
   let storedRecipe = window.localStorage.getItem(id);
-  storedRecipe = JSON.parse(storedRecipe);
 
-  const currentStepDetails = storedRecipe.find(({number}) => number === step);
-  console.log('currentStepDetails', currentStepDetails);
+  if (storedRecipe === null) {
 
-  const lastStep = checkForLastStep(step, storedRecipe);
+    setLocalStorageRecipe(id);
 
-  if (lastStep === true) {
-    $('#next-step').text('Done');
+  } else {
+
+    storedRecipe = JSON.parse(storedRecipe);
+
+    const currentStepDetails = storedRecipe.find(({number}) => number === step);
+    console.log('currentStepDetails', currentStepDetails);
+
+    const lastStep = checkForLastStep(step, storedRecipe);
+
+    if (lastStep === true) {
+      $('#next-step').text('Done');
+    }
   }
 
   $('#next-step').on('click', function() {
@@ -33,60 +43,116 @@ $(document).ready(function() {
     event.preventDefault();
 
     let storedRecipe = window.localStorage.getItem(id);
-    storedRecipe = JSON.parse(storedRecipe);
 
-    const nextStep = (step + 1);
+    if (storedRecipe === null) {
 
-    const nextStepDetails = storedRecipe.find(({number}) => number === nextStep);
-
-    console.log('nextStepDetails', nextStepDetails);
-
-    if (nextStepDetails !== undefined) {
-      console.log('Next step exists');
-
-      //go to next step
-      $.get(`/${id}/steps/:steps`).then(() => {
-
-        window.location.replace(`/${id}/steps/${nextStep}`);
-        // If there's an error, log the error
-      }).catch(handleStepsErr);
+      setLocalStorageRecipe(id);
 
     } else {
+
+      storedRecipe = JSON.parse(storedRecipe);
+
+      const nextStep = (step + 1);
+
+      const nextStepDetails = storedRecipe.find(({number}) => number === nextStep);
+
+      console.log('nextStepDetails', nextStepDetails);
+
+      if (nextStepDetails !== undefined) {
+        console.log('Next step exists');
+
+        //go to next step
+        $.get(`/${id}/steps/:steps`).then(() => {
+
+          window.location.replace(`/${id}/steps/${nextStep}`);
+        // If there's an error, log the error
+        }).catch(handleStepsErr);
+
+      } else {
       // Finished recipe steps
-      window.localStorage.clear();
-      window.location.replace('/members');
+        window.localStorage.clear();
+        window.location.replace('/members');
+      }
+
     }
+
   });
 
   $('#previous-step').on('click', function() {
 
     let storedRecipe = window.localStorage.getItem(id);
-    storedRecipe = JSON.parse(storedRecipe);
 
-    console.log('current step: ', step);
-    const previousStep = (step - 1);
-    console.log('previous step: ', previousStep);
+    if (storedRecipe === null) {
 
-    const previousStepDetails = storedRecipe.find(({number}) => number === previousStep);
-
-    console.log('previousStepDetails', previousStepDetails);
-
-    if (previousStepDetails !== undefined) {
-      console.log('Previous step exists');
-
-      //go to previous step
-      $.get(`/${id}/steps/:steps`).then(() => {
-
-        window.location.replace(`/${id}/steps/${previousStep}`);
-        // If there's an error, log the error
-      }).catch(handleStepsErr);
+      setLocalStorageRecipe(id);
 
     } else {
-      window.location.replace(`/details/${id}`);
+
+      storedRecipe = JSON.parse(storedRecipe);
+
+      console.log('current step: ', step);
+      const previousStep = (step - 1);
+      console.log('previous step: ', previousStep);
+
+      const previousStepDetails = storedRecipe.find(({number}) => number === previousStep);
+
+      console.log('previousStepDetails', previousStepDetails);
+
+      if (previousStepDetails !== undefined) {
+        console.log('Previous step exists');
+
+        //go to previous step
+        $.get(`/${id}/steps/:steps`).then(() => {
+
+          window.location.replace(`/${id}/steps/${previousStep}`);
+        // If there's an error, log the error
+        }).catch(handleStepsErr);
+
+      } else {
+        window.location.replace(`/details/${id}`);
+      }
+
     }
+
   });
 
 });
+
+const setLocalStorageRecipe = id => {
+
+  //if recipe is not in localStorage, set it:
+  let stepsArray = [];
+
+  const query = `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?apiKey=${API_KEY}`;
+
+  $.ajax({
+    url: query,
+    success: function(data) {
+
+      console.log(data);
+
+      if (data.length > 0) {
+        console.log('start cooking');
+
+        const stepsList = data[0].steps;
+
+        for (let i = 0; i < stepsList.length; i++) {
+          stepsArray.push(stepsList[i]);
+        }
+
+      } else {
+        // If the recipe is not available, alert the user with a modal:
+        alert('The recipe for this meal is not available.');
+      }
+
+    }
+  }).then(() => {
+
+    window.localStorage.setItem(id, JSON.stringify(stepsArray));
+
+  });
+
+};
 
 const checkForLastStep = (step, storedRecipe) => {
 
