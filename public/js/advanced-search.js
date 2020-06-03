@@ -13,7 +13,7 @@ $(document).ready(() => {
   // Max carb slider
   const carbSlider = $('#carb-range');
   const carbOutput = $('#carb-output');
-  carbOutput.text(calSlider.val());
+  carbOutput.text(carbSlider.val());
   carbSlider.on('input', function() {
     carbOutput.text($(this).val());
   });
@@ -30,35 +30,28 @@ $(document).ready(() => {
   $('#advanced-search').on('submit', (event) => {
 
     event.preventDefault();
-    $('advanced-search-results').empty();
+    $('#advanced-search-results').empty();
+    $('#no-recipes').empty();
 
-    // Query string
     const dishInput = $('#dish').val();
     const dishTrimmed = dishInput.trim();
     const dishString = dishTrimmed.replace(/ /g, ',+');
 
-    // Cuisine
     const cuisine = $('#cuisine').val();
 
-    // Diet
     const dietInput = $('input[name=diet]:checked').val();
 
-    // Intolorances
     const allergyInput = [];
     $.each($('input[name=\'allergy\']:checked'), function(){
       allergyInput.push($(this).val());
     });
 
-    // Max ready time
     const prepTime = $('#prep-time').val();
 
-    // Max calories
     const maxCalories = calOutput.text();
 
-    // Max carbs
     const maxCarbs = carbOutput.text();
 
-    // Max fat
     const maxFat = fatOutput.text();
 
 
@@ -69,7 +62,8 @@ $(document).ready(() => {
     const maxCholesterol = 1000;
     const maxFiber = 1000;
     const maxSodium = 500;
-    const maxSugar = 100;
+
+    const maxSugar = $('#sugar').val();
 
     const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&cuisine=${cuisine}&maxReadyTime=${prepTime}&diet=${dietInput}&maxCalories=${maxCalories}&maxSugar=${maxSugar}&intolerances=${allergyInput}&maxFat${maxFat}&maxSaturatedFat=${maxSaturatedFat}&maxCholestero=${maxCholesterol}&maxFiber=${maxFiber}&maxCarbs${maxCarbs}&maxSodium=${maxSodium}&instructionsRequired=true&addRecipeInformation=true&sort=popularity&sort=desc&number=20&apiKey=${API_KEY}`;
 

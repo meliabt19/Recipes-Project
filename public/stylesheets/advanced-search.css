@@ -1,8 +1,6 @@
 #advanced-search {
 margin: 30px;
 }
-
-
-#cal-range, #carb-range, #fat-range {
-    width: 100%;
+#no-recipes {
+    text-align: center;
 }
