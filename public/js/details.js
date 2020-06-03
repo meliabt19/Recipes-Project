@@ -9,6 +9,10 @@ $(document).ready(function() {
   const id = urlString.substring(idIndex + 1);
   $('#recipe-id').text(id);
 
+  const query = '';
+
+
+
   $('#previous').on('click', function(event) {
     event.preventDefault();
     window.location.replace('/members');
