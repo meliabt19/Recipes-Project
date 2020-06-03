@@ -1,4 +1,4 @@
-const API_KEY = 'e88644c6c9354e7795a330f1d321bc90';
+const API_KEY = '520acba345fb4fc582e4496d65f38cef';
 
 $(document).ready(() => {
 
@@ -54,14 +54,13 @@ $(document).ready(() => {
 
     const maxFat = fatOutput.text();
 
-
-
-
-
     const maxSaturatedFat = 500;
+
     const maxCholesterol = 1000;
+
     const maxFiber = 1000;
-    const maxSodium = 500;
+
+    const maxSodium = $('#sodium').val();
 
     const maxSugar = $('#sugar').val();
 
@@ -92,19 +91,21 @@ $(document).ready(() => {
 
   });
 
-  const createRecipeCard = (recipe) => {
+});
 
-    const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
+const createRecipeCard = (recipe) => {
 
-    const imageTypeIndex = image.lastIndexOf('.', image.length);
+  const { id, title, image, readyInMinutes, servings, sourceUrl } = recipe;
 
-    const imageType = image.substring(imageTypeIndex);
+  const imageTypeIndex = image.lastIndexOf('.', image.length);
 
-    const imageSize = '480x360';
+  const imageType = image.substring(imageTypeIndex);
 
-    const imagePath = `https://spoonacular.com/recipeImages/${id}-${imageSize}${imageType}`;
+  const imageSize = '480x360';
 
-    return `<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+  const imagePath = `https://spoonacular.com/recipeImages/${id}-${imageSize}${imageType}`;
+
+  return `<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
               <div class="card">
                 <img src="${imagePath}" class="card-img-top img-fluid" alt="${title}">
                 <div class="card-body">
@@ -120,6 +121,4 @@ $(document).ready(() => {
               </div>
             </div>`;
 
-  };
-
-});
+};
