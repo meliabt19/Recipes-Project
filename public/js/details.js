@@ -1,13 +1,11 @@
 const API_KEY = '520acba345fb4fc582e4496d65f38cef';
 
 $(document).ready(function() {
-  // This file just does a GET request to figure out which user is logged in
-  // and updates the HTML on the page
+
   const url = window.location;
   const urlString = url.toString();
   const idIndex = urlString.lastIndexOf('/');
   const id = urlString.substring(idIndex + 1);
-  $('#recipe-id').text(id);
 
   const query = `https://api.spoonacular.com/recipes/${id}/information?addRecipeInformation=true&includeNutrition=true&apiKey=${API_KEY}`;
 
