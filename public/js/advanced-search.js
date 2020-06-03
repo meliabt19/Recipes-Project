@@ -54,7 +54,7 @@ $(document).ready(() => {
 
     const maxFat = fatOutput.text();
 
-    const maxSaturatedFat = 500;
+    const maxSaturatedFat = 1000;
 
     const maxCholesterol = 1000;
 
