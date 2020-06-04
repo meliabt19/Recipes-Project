@@ -1,6 +1,11 @@
+h3 {
+    margin: 10px;
+}
+
 #advanced-search {
 margin: 30px;
 }
+
 #no-recipes {
     text-align: center;
 }

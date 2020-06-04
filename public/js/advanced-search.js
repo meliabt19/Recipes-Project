@@ -214,12 +214,6 @@ const viewRecipeDetails = id => {
 
 };
 
-// eslint-disable-next-line no-unused-vars
-const deleteRecipe = id => {
-  event.preventDefault();
-  console.log(id);
-};
-
 const handleErr = err => {
   console.log(err);
 };

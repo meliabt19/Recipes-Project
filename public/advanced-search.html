@@ -31,7 +31,7 @@
     <div class="row text-center">
 
         <div class="col">
-            <h1>Adanced Search</h1>
+            <h3>Adanced Search</h3>
         </div>
 
     </div>
@@ -108,7 +108,7 @@
                     <option value="70">70</option>
                     <option value="80">80</option>
                     <option value="90">90</option>
-                    <option value="100">100</option>
+                    <option value="100" selected>100</option>
                 </select>
             </div>
 
@@ -121,7 +121,7 @@
             <div class="col-sm-10">
                 <div class="slidecontainer">
                     <span id="cal-output"></span>
-                    <input type="range" min="0" max="2000" value="0" class="slider" id="cal-range">
+                    <input type="range" min="0" max="2000" value="1000" class="slider" id="cal-range">
                 </div>
             </div>
 
@@ -134,7 +134,7 @@
             <div class="col-sm-10">
                 <div class="slidecontainer">
                     <span id="carb-output"></span>
-                    <input type="range" min="0" max="800" value="0" class="slider" id="carb-range">
+                    <input type="range" min="0" max="800" value="400" class="slider" id="carb-range">
                 </div>
             </div>
 
@@ -147,7 +147,7 @@
             <div class="col-sm-10">
                 <div class="slidecontainer">
                     <span id="fat-output"></span>
-                    <input type="range" min="0" max="800" value="0" class="slider" id="fat-range">
+                    <input type="range" min="0" max="800" value="400" class="slider" id="fat-range">
                 </div>
             </div>
 
@@ -158,7 +158,7 @@
 
             <label class="col-sm-2 col-form-label">Sodium:</label>
             <div class="col-sm-10">
-                <input type="number" value="0" min="0" max="300" id="sodium">
+                <input type="number" value="500" min="0" max="800" id="sodium">
             </div>
 
         </div>
@@ -168,11 +168,10 @@
 
             <label class="col-sm-2 col-form-label">Sugar:</label>
             <div class="col-sm-10">
-                <input type="number" value="0" min="0" max="300" id="sugar">
+                <input type="number" value="50" min="0" max="300" id="sugar">
             </div>
 
         </div>
-
 
         <!--Diet-->
         <fieldset class="form-group row">
