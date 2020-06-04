@@ -54,4 +54,39 @@ module.exports = function(app) {
       });
     }
   });
+
+  app.get('/api/recipes', function(req, res) {
+
+    db.Recipe.findAll({}).then(function(dbRecipe) {
+      res.json(dbRecipe);
+    });
+
+  });
+
+  app.post('/api/add_recipe', function(req, res) {
+    db.Recipe.create({
+      id: req.body.id,
+      title: req.body.title,
+      vegetarian: req.body.vegetarian,
+      vegan: req.body.vegan,
+      veryHealthy: req.body.veryHealthy,
+      prepTime: req.body.prepTime,
+      servings: req.body.servings,
+      cuisines: req.body.cuisines,
+      imageUrlLg: req.body.imageUrlLg,
+      imageUrlSm: req.body.imageUrlSm,
+      imageType: req.body.imageType,
+      description: req.body.description,
+      diets: req.body.diets,
+      ingredients: req.body.ingredients,
+      nutrition: req.body.nutrition,
+      steps: req.body.steps,
+      sourceName: req.body.sourceName,
+      sourceUrl: req.body.sourceUrl
+    })
+      .catch(function(err) {
+        res.status(401).json(err);
+      });
+  });
+
 };
