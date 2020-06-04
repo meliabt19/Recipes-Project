@@ -72,6 +72,12 @@ $(document).ready(() => {
       url: query,
       success: (data) => {
 
+        // Scrolls down to search results
+        const offset = $('#advanced-search-results').offset();
+        $('html,body').animate({
+          scrollTop: offset.top
+        });
+
         const {length} = data.results;
 
         if (length === 0) {
