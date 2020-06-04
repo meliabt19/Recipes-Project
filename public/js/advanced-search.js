@@ -2,36 +2,42 @@ const API_KEY = '520acba345fb4fc582e4496d65f38cef';
 
 $(document).ready(() => {
 
+  // Max calories slider
+  const calSlider = $('#cal-range');
+  const calOutput = $('#cal-output');
+  calOutput.text(calSlider.val());
+  calSlider.on('input', function() {
+    calOutput.text($(this).val());
+  });
+
+  // Max carb slider
+  const carbSlider = $('#carb-range');
+  const carbOutput = $('#carb-output');
+  carbOutput.text(carbSlider.val());
+  carbSlider.on('input', function() {
+    carbOutput.text($(this).val());
+  });
+
+  // Max fat slider
+  const fatSlider = $('#fat-range');
+  const fatOutput = $('#fat-output');
+  fatOutput.text(fatSlider.val());
+  fatSlider.on('input', function() {
+    fatOutput.text($(this).val());
+  });
+
+
   $('#advanced-search').on('submit', (event) => {
 
     event.preventDefault();
     $('#advanced-search-results').empty();
+    $('#no-recipes').empty();
 
     const dishInput = $('#dish').val();
-
-    const validInput = validateSearchInput(dishInput);
-
-    if (validInput) {
-      hideError('#search-error-alert');
-    } else {
-      textInputError('#search-error-alert', '#search-error-msg', 'Invalid search field. Must be alphabetical and cannot contain punctuation marks.');
-      return;
-    }
-
     const dishTrimmed = dishInput.trim();
     const dishString = dishTrimmed.replace(/ /g, ',+');
 
-    const prepTimeInput = $('#prep-time').val();
-
-    let prepTime;
-
-    if (prepTimeInput !== 'any') {
-      prepTime = prepTimeInput;
-    } else {
-      prepTime = null;
-    }
-
-    console.log('prepTime: ' + prepTime);
+    const cuisine = $('#cuisine').val();
 
     const dietInput = $('input[name=diet]:checked').val();
 
@@ -40,7 +46,27 @@ $(document).ready(() => {
       allergyInput.push($(this).val());
     });
 
-    const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&maxReadyTime=${prepTime}&addRecipeInformation=true&instructionsRequired=true&diet=${dietInput}&intolerances=${allergyInput}&apiKey=${API_KEY}`;
+    const prepTime = $('#prep-time').val();
+
+    const maxCalories = calOutput.text();
+
+    const maxCarbs = carbOutput.text();
+
+    const maxFat = fatOutput.text();
+
+    const maxSaturatedFat = 1000;
+
+    const maxCholesterol = 1000;
+
+    const maxFiber = 1000;
+
+    const maxSodium = $('#sodium').val();
+
+    const maxSugar = $('#sugar').val();
+
+    const query = `https://api.spoonacular.com/recipes/complexSearch?query=${dishString}&cuisine=${cuisine}&maxReadyTime=${prepTime}&diet=${dietInput}&maxCalories=${maxCalories}&maxSugar=${maxSugar}&intolerances=${allergyInput}&maxFat${maxFat}&maxSaturatedFat=${maxSaturatedFat}&maxCholestero=${maxCholesterol}&maxFiber=${maxFiber}&maxCarbs${maxCarbs}&maxSodium=${maxSodium}&instructionsRequired=true&addRecipeInformation=true&sort=popularity&sort=desc&number=20&apiKey=${API_KEY}`;
+
+    console.log(query);
 
     $.ajax({
       url: query,
@@ -66,15 +92,6 @@ $(document).ready(() => {
   });
 
 });
-
-const textInputError = (type, messageContainer, message) => {
-  $(type + ' ' + messageContainer).text(message);
-  $(type).fadeIn(500);
-};
-
-const hideError = type => {
-  $(type).hide();
-};
 
 const createRecipeCard = (recipe) => {
 
@@ -104,32 +121,4 @@ const createRecipeCard = (recipe) => {
               </div>
             </div>`;
 
-};
-
-  // eslint-disable-next-line no-unused-vars
-const addToRecipeBook = id => {
-  event.preventDefault();
-  console.log(id);
-};
-
-// eslint-disable-next-line no-unused-vars
-const viewRecipeDetails = id => {
-  event.preventDefault();
-  console.log(id);
-
-  $.get(`/details/${id}`).then(function() {
-    window.location.replace(`/details/${id}`);
-    // If there's an error, log the error
-  }).catch(handleDetailsErr);
-
-};
-
-const handleDetailsErr = err => {
-  console.log(err);
-};
-
-const validateSearchInput = input => {
-  var rmSp = input.trim();
-  var result = rmSp.search(/^[A-Za-z\s']+$/); //check to make sure the input is alphabetical
-  return (result === 0 ? true : false); //return true if it is alphabetical, false if not
 };
