@@ -89,4 +89,13 @@ module.exports = function(app) {
       });
   });
 
+  // Route for deleting recipes from users recipe book
+  app.delete('/api/delete_recipe/:id', (req) => {
+    db.Recipe.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+  });
+
 };

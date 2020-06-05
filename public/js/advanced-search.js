@@ -72,11 +72,17 @@ $(document).ready(() => {
       url: query,
       success: (data) => {
 
+        // Scrolls down to search results
+        const offset = $('#advanced-search-results').offset();
+        $('html,body').animate({
+          scrollTop: offset.top
+        });
+
         const {length} = data.results;
 
         if (length === 0) {
           $('#no-recipes').text('No found recipes, try again...');
-        } else{
+        } else {
           const results = data.results;
 
           results.forEach(rec => {
@@ -121,4 +127,117 @@ const createRecipeCard = (recipe) => {
               </div>
             </div>`;
 
+};
+
+// eslint-disable-next-line no-unused-vars
+const addToRecipeBook = id => {
+  event.preventDefault();
+
+  const query = `https://api.spoonacular.com/recipes/${id}/information?instructionsRequired=true&addRecipeInformation=true&includeNutrition=true&apiKey=${API_KEY}`;
+
+  let title, vegetarian, vegan, veryHealthy, prepTime,
+    servings, description, imageType, cuisines,
+    diets, ingredients, steps, imageUrlLg, imageUrlSm,
+    nutrition, sourceName, sourceUrl;
+
+  $.ajax({
+    url: query,
+    success: function(data) {
+
+      console.log('Recipe Details: ', data);
+
+      title = data.title;
+      vegetarian = data.vegetarian;
+      vegan = data.vegan;
+      veryHealthy = data.veryHealthy;
+      prepTime = data.readyInMinutes;
+      servings = data.servings;
+      description = data.summary;
+      sourceName = data.sourceName;
+      sourceUrl = data.sourceUrl;
+
+      cuisines = JSON.stringify(data.cuisines);
+      diets = JSON.stringify(data.diets);
+
+      ingredients = JSON.stringify(data.extendedIngredients);
+
+      if (data.analyzedInstructions.length > 0) {
+
+        const allSteps = data.analyzedInstructions;
+
+        steps = [];
+
+        for (let i = 0; i < allSteps.length; i++) {
+          for (let j = 0; j < allSteps[i].steps.length; j++) {
+            //console.log('step added: ', allSteps[i].steps[j]);
+            steps.push(allSteps[i].steps[j]);
+          }
+        }
+
+        //change the step number to sequence 1 - total:
+        for (let i = 0; i < steps.length; i++) {
+          steps[i].number = (i + 1);
+        }
+
+        steps = JSON.stringify(steps);
+
+      } else {
+        steps = null;
+      }
+      //large image (on details page):
+      imageUrlLg = data.image;
+
+      //small image (on search page):
+      imageUrlSm = imageUrlLg.replace('556x370', '480x360');
+
+      imageType = data.imageType;
+
+      nutrition = JSON.stringify(data.nutrition.nutrients);
+
+    }
+  }).then(() => {
+
+    //Insert Recipe into database:
+    $.post('/api/add_recipe', {
+      id: id,
+      title: title,
+      vegetarian: vegetarian,
+      vegan: vegan,
+      veryHealthy: veryHealthy,
+      prepTime: prepTime,
+      servings: servings,
+      cuisines: cuisines,
+      imageUrlLg: imageUrlLg,
+      imageUrlSm: imageUrlSm,
+      imageType: imageType,
+      description: description,
+      diets: diets,
+      ingredients: ingredients,
+      nutrition: nutrition,
+      steps: steps,
+      sourceName: sourceName,
+      sourceUrl: sourceUrl
+    })
+      .catch(handleErr);
+
+  }).then(() => {
+    alert('Recipe successfully added to your Recipe Book');
+  });
+
+};
+
+// eslint-disable-next-line no-unused-vars
+const viewRecipeDetails = id => {
+  event.preventDefault();
+  console.log(id);
+
+  $.get(`/details/${id}`).then(function() {
+    window.location.replace(`/details/${id}`);
+    // If there's an error, log the error
+  }).catch(handleErr);
+
+};
+
+const handleErr = err => {
+  console.log(err);
 };
