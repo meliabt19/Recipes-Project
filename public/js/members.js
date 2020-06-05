@@ -282,7 +282,7 @@ const deleteRecipe = id => {
 
   $.ajax({
     method: 'DELETE',
-    url: `/api/delete_recpie/${id}`,
+    url: `/api/delete_recipe/${id}`,
     success:
       window.location.reload(true)
   });
