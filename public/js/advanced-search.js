@@ -162,7 +162,25 @@ const addToRecipeBook = id => {
       ingredients = JSON.stringify(data.extendedIngredients);
 
       if (data.analyzedInstructions.length > 0) {
-        steps = JSON.stringify(data.analyzedInstructions[0].steps);
+
+        const allSteps = data.analyzedInstructions;
+
+        steps = [];
+
+        for (let i = 0; i < allSteps.length; i++) {
+          for (let j = 0; j < allSteps[i].steps.length; j++) {
+            //console.log('step added: ', allSteps[i].steps[j]);
+            steps.push(allSteps[i].steps[j]);
+          }
+        }
+
+        //change the step number to sequence 1 - total:
+        for (let i = 0; i < steps.length; i++) {
+          steps[i].number = (i + 1);
+        }
+
+        steps = JSON.stringify(steps);
+
       } else {
         steps = null;
       }
