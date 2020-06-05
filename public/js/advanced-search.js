@@ -82,7 +82,7 @@ $(document).ready(() => {
 
         if (length === 0) {
           $('#no-recipes').text('No found recipes, try again...');
-        } else{
+        } else {
           const results = data.results;
 
           results.forEach(rec => {
