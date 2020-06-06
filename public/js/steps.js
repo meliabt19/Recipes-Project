@@ -247,8 +247,7 @@ $(document).ready(function() {
 }); // end document.ready()
 
 const displayStep = (step, allIngredients) => {
-
-  console.log('allIngredients :', allIngredients);
+  //console.log('allIngredients :', allIngredients);
 
   const stepDirections = step.step;
 
@@ -286,14 +285,6 @@ const displayStep = (step, allIngredients) => {
 };
 
 const getIngredients = (stepDirections, stepIngredients, allIngredients) => {
-  console.log('step directions: ', stepDirections);
-  console.log('all ingredients: ', allIngredients);
-
-  //Remove punctuation from the step instructions search words:
-  const directionsWordsRmPunc = stepDirections.replace(/[,.?"'();:{}&!@#$%^&*+~///<>]/g, ' ');
-  const directionsWords = directionsWordsRmPunc.split(' ');
-
-  console.log('directionsWords ', directionsWords);
 
   //Track all images that have been added to prevent duplicates:
   let imagesAdded = [];
@@ -301,118 +292,35 @@ const getIngredients = (stepDirections, stepIngredients, allIngredients) => {
   //Initialize Ingredients list:
   let ingredientsList = '';
 
-  for (let i = 0; i < directionsWords.length; i++){
-
-    //Compare each word in the instructions to the list of ingredients:
-    const word = directionsWords[i];
+  //This loop matches the step ingredients with the list of all recipe ingredients. This loop needs to
+  //be done in order to extract the ingredient measurements from the list of all ingredients
+  for (let i = 0; i < stepIngredients.length; i++) {
+    const stepIngredientImage = stepIngredients[i].image;
 
     for (let j = 0; j < allIngredients.length; j++) {
-      //console.log(allIngredients[i].image);
-      const ingredientDetails = allIngredients[j];
-      const image = allIngredients[j].image;
-
-      //Break up the image into separate words:
-      let wordIndex = image.indexOf('-');
-      let imgTypeIndex = image.indexOf('.');
-      let firstWord = '';
-      let isMatch;
-
-      if (wordIndex !== -1) {
-        //multiple word image:
-        firstWord = image.substring(0, wordIndex);
-
-        let thirdWordIndex = image.indexOf('-', wordIndex + 1);
-
-        if (thirdWordIndex !== -1) {
-          //three words in image:
-          let secWord = image.substring(wordIndex + 1, imgTypeIndex);
-          let thirdWord = image.substring(thirdWordIndex, imgTypeIndex);
-
-          //check if the word in the directions matches the word in the image:
-          isMatch = checkForMatch(word, firstWord);
-
-          if (isMatch === true) {
-            //console.log('word ' + word + ' matches ' + firstWord);
-            ingredientsList = addOrIgnoreIngredient(imagesAdded, image, ingredientDetails, ingredientsList);
-          }
-
-          isMatch = checkForMatch(word, secWord);
-
-          if (isMatch === true) {
-            //console.log('word ' + word + ' matches ' + secWord);
-            ingredientsList = addOrIgnoreIngredient(imagesAdded, image, ingredientDetails, ingredientsList);
-          }
-
-          isMatch = checkForMatch(word, thirdWord);
-
-          if (isMatch === true) {
-            //console.log('word ' + word + ' matches ' + thirdWord);
-            ingredientsList = addOrIgnoreIngredient(imagesAdded, image, ingredientDetails, ingredientsList);
-          }
-
-        } else {
-          //two words in image
-          let secWord = image.substring(wordIndex + 1, imgTypeIndex);
-
-          //check if the word in the directions matches the word in the image:
-          isMatch = checkForMatch(word, firstWord);
-
-          if (isMatch === true) {
-            //console.log('word ' + word + ' matches ' + firstWord);
-            ingredientsList = addOrIgnoreIngredient(imagesAdded, image, ingredientDetails, ingredientsList);
-          }
-
-          isMatch = checkForMatch(word, secWord);
-
-          if (isMatch === true) {
-            //console.log('word ' + word + ' matches ' + secWord);
-            ingredientsList = addOrIgnoreIngredient(imagesAdded, image, ingredientDetails, ingredientsList);
-          }
-        }
-
-      } else {
-        //one word image
-        wordIndex = image.indexOf('.');
-        firstWord = image.substring(0, wordIndex);
-
-        //check if the word in the directions matches the word in the image:
-        isMatch = checkForMatch(word, firstWord);
-
-        if (isMatch === true) {
-          //console.log('word ' + word + ' matches ' + firstWord);
-          ingredientsList = addOrIgnoreIngredient(imagesAdded, image, ingredientDetails, ingredientsList);
-        }
+      const allIngredientDetails = allIngredients[j];
+      const allIngredientImage = allIngredients[j].image;
+      //if images match, add them to the ingredients images array:
+      if (stepIngredientImage === allIngredientImage) {
+        ingredientsList = addOrIgnoreIngredient(imagesAdded, allIngredientImage, allIngredientDetails, ingredientsList);
       }
-
     }
 
   }
 
-  for (let i = 0; i < stepIngredients.length; i++) {
-    //console.log('ingredient name: ' + ingredients[i].name + ' id: ' + ingredients[i].id);
+  //This loop searches the directions and adds any ingredient images not listed in the step ingredients array:
+  for (let i = 0; i < allIngredients.length; i++) {
+    const ingredientDetails = allIngredients[i];
+    const ingredientName = allIngredients[i].name;
+    const ingredientImage = allIngredients[i].image;
 
-    //Try to match id numbers within ingredient ids:
-    const ingredientId = stepIngredients[i].id;
-    const ingredientIdString = ingredientId.toString();
+    const exists = stepDirections.indexOf(ingredientName);
+    //console.log(ingredientName + ' ingredient exists at: ', exists);
 
-    //Loop through all of the ingredients and match their ids to the step ingredient ids:
-    for (let j = 0; j < allIngredients.length; j++) {
-
-      //console.log('all ingredients name: ' + allIngredients[j].name + ' id: ' + allIngredients[j].id);
-      const ingredientIdDetails = allIngredients[j];
-      const allIngredientsId = allIngredients[j].id;
-      const allIngredientsIdString = allIngredientsId.toString();
-
-      isMatch = allIngredientsIdString.indexOf(ingredientIdString);
-      isMatch2 = ingredientIdString.indexOf(allIngredientsIdString);
-
-      if (isMatch !== -1 || isMatch2 !== -1) {
-        const image = ingredientIdDetails.image;
-        ingredientsList = addOrIgnoreIngredient(imagesAdded, image, ingredientIdDetails, ingredientsList);
-      }
-
+    if (exists !== -1) {
+      //Ingredient exists within directions, add it to ingredients list:
+      ingredientsList = addOrIgnoreIngredient(imagesAdded, ingredientImage, ingredientDetails, ingredientsList);
     }
-
   }
 
   return ingredientsList;
@@ -423,11 +331,12 @@ const addOrIgnoreIngredient = (imagesAdded, image, ingredientDetails, ingredient
 
   let add = true;
 
-  //If the ingredient matches an ingredient already added, don't add it.
-  for (let i = 0; i < imagesAdded.length; i++) {
-    if (image === imagesAdded[i]) {
-      //console.log(image + ' matches ' + imagesAdded[i]);
-      add = false;
+  if (image !== null && image !== 'no.jpg') {
+    //If the ingredient matches an ingredient already added, don't add it.
+    for (let i = 0; i < imagesAdded.length; i++) {
+      if (image === imagesAdded[i]) {
+        add = false;
+      }
     }
   }
 
@@ -438,6 +347,7 @@ const addOrIgnoreIngredient = (imagesAdded, image, ingredientDetails, ingredient
     imagesAdded.push(image);
     // Add ingredient and image to ingredients string:
     const imagePath = `https://spoonacular.com/cdn/ingredients_100x100/${image}`;
+
     const ingredientMeasurement = ingredientDetails.original;
 
     ingredientsList += `<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
@@ -450,16 +360,6 @@ const addOrIgnoreIngredient = (imagesAdded, image, ingredientDetails, ingredient
 
   //Return new ingredients list, or the same one unchanged:
   return ingredientsList;
-
-};
-
-const checkForMatch = (word1, word2) => {
-
-  if (word1 === word2) {
-    return true;
-  } else {
-    return false;
-  }
 
 };
 
