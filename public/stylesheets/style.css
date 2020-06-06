@@ -1,3 +1,11 @@
+.content {
+  margin-bottom: 50px;
+}
+
+.align-right {
+  float: right;
+}
+
 form.signup,
 form.login {
   margin-top: 50px;
