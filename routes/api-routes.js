@@ -63,6 +63,20 @@ module.exports = function(app) {
 
   });
 
+  app.get('/api/details/:id', async (req, res) => {
+    try {
+      const recipe = await db.Recipe.findOne({
+        where: {
+          id: req.params.id
+        }
+      });
+      res.json(recipe);
+    } catch (err) {
+      res.json(err);
+    }
+    
+  });
+
   app.post('/api/add_recipe', function(req, res) {
     db.Recipe.create({
       id: req.body.id,
@@ -89,4 +103,3 @@ module.exports = function(app) {
       });
   });
 
-};
