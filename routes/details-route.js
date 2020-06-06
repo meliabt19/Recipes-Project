@@ -1,34 +1,27 @@
 var db = require('../models');
 
+// Routes
+// =============================================================
 module.exports = function(app) {
+
+    app.get('/api/recipes', function(req, res) {
+
+        db.Recipe.findAll({}).then(function(dbRecipe) {
+          res.json(dbRecipe);
+        });
     
-    // Gets details of Recipe
-  app.get('/api/recipes/', function(req, res) {
-    db.details.findAll({})
-      .then(function(dbRecipe) {
-        res.json(dbRecipe);
       });
-  });
-  //  Specific Recipes
-  app.get('/api/', function(req, res) {
-    db.details.findOne({
-      where: {
-        id: req.body.id
-      }
-    })
-      .then(function(dbRecipe) {
-        res.json(dbRecipe);
+    
+      app.get('/api/details/:id', async (req, res) => {
+        try {
+          const recipe = await db.Recipe.findOne({
+            where: {
+              id: req.params.id
+            }
+          });
+          res.json(recipe);
+        } catch (err) {
+          res.json(err);
+        }
+        
       });
-  }); 
-  
-    app.post('/api/', function(req, res) {
-    console.log(req.body);
-    db.details.create({
-      title: req.body.title,
-      body: req.body.body,
-      category: req.body.category
-    })
-      .then(function(dbPost) {
-        res.json(dbPost);
-    });
-});
