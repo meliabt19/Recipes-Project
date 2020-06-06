@@ -63,6 +63,20 @@ module.exports = function(app) {
 
   });
 
+  app.get('/api/details/:id', async (req, res) => {
+    try {
+      const recipe = await db.Recipe.findOne({
+        where: {
+          id: req.params.id
+        }
+      });
+      res.json(recipe);
+    } catch (err) {
+      res.json(err);
+    }
+    
+  });
+
   app.post('/api/add_recipe', function(req, res) {
     db.Recipe.create({
       id: req.body.id,
@@ -87,6 +101,15 @@ module.exports = function(app) {
       .catch(function(err) {
         res.status(401).json(err);
       });
+  });
+
+   // Route for deleting recipes from users recipe book
+   app.delete('/api/delete_recipe/:id', (req) => {
+    db.Recipe.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
   });
 
 };

@@ -1,4 +1,4 @@
-const API_KEY = '520acba345fb4fc582e4496d65f38cef';
+const API_KEY = 'ae817b3f66f04aa9b0c8c91f21d78ecd';
 
 $(document).ready(function() {
 
@@ -54,14 +54,26 @@ $(document).ready(function() {
         for (i = 0; i < extendedIngredients.length; i++) {
 
           const name = extendedIngredients[i].name;
-          const IngredientImage = extendedIngredients[i].image;
 
-          const imagePath = `https://spoonacular.com/cdn/ingredients_100x100/${IngredientImage}`;
+          let ingredientImage = '';
+          let imagePath = '';
+          let imageTag = '';
+          if (extendedIngredients[i].image !== null && extendedIngredients[i].image !== 'no.jpg') {
+            ingredientImage = extendedIngredients[i].image;
+            imagePath = `https://spoonacular.com/cdn/ingredients_100x100/${ingredientImage}`;
+            imageTag = `<img src="${imagePath}" alt="${name}" title="${name}">`;
+
+          } else {
+            imageTag = `<img src="https://via.placeholder.com/100x100.png/eee/?text=Image+Not+Available" class="img-fluid" title="Image not available">
+                        <br><label>(Image not available)</label>`;
+          }
+
+          imagePath = `https://spoonacular.com/cdn/ingredients_100x100${ingredientImage}`;
 
           $('#ingredients-list').append(`
               <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
                 <div class="ingredient-item">
-                  <img src="${imagePath}" alt="${name}" title="${name}">
+                  ${imageTag}
                   <p><label>${name}</label><p>
                 </div>
               </div>
@@ -130,24 +142,71 @@ $(document).ready(function() {
   $('.start-cooking').on('click', function(event) {
     event.preventDefault();
 
-    let stepsArray = [];
+    const query = `https://api.spoonacular.com/recipes/${id}/information?instructionsRequired=true&addRecipeInformation=true&includeNutrition=true&apiKey=${API_KEY}`;
 
-    const query = `https://api.spoonacular.com/recipes/${id}/analyzedInstructions?apiKey=${API_KEY}`;
+    let recipe = {};
+
+    let title, vegetarian, vegan, veryHealthy, prepTime,
+      servings, description, imageType, cuisines,
+      diets, ingredients, steps, imageUrlLg, imageUrlSm,
+      nutrition, sourceName, sourceUrl;
 
     $.ajax({
       url: query,
       success: function(data) {
 
-        console.log(data);
+        console.log('Recipe Details: ', data);
 
-        if (data.length > 0) {
-          console.log('start cooking');
+        title = data.title;
+        vegetarian = data.vegetarian;
+        vegan = data.vegan;
+        veryHealthy = data.veryHealthy;
+        prepTime = data.readyInMinutes;
+        servings = data.servings;
+        description = data.summary;
+        sourceName = data.sourceName;
+        sourceUrl = data.sourceUrl;
 
-          const stepsList = data[0].steps;
+        cuisines = JSON.stringify(data.cuisines);
+        diets = JSON.stringify(data.diets);
 
-          for (let i = 0; i < stepsList.length; i++) {
-            stepsArray.push(stepsList[i]);
+        ingredients = JSON.stringify(data.extendedIngredients);
+
+        if (data.analyzedInstructions.length > 0) {
+
+          const allSteps = data.analyzedInstructions;
+
+          steps = [];
+
+          for (let i = 0; i < allSteps.length; i++) {
+            for (let j = 0; j < allSteps[i].steps.length; j++) {
+              //console.log('step added: ', allSteps[i].steps[j]);
+              steps.push(allSteps[i].steps[j]);
+            }
           }
+
+          //change the step number to sequence 1 - total:
+          for (let i = 0; i < steps.length; i++) {
+            steps[i].number = (i + 1);
+          }
+
+          steps = JSON.stringify(steps);
+
+        } else {
+          steps = null;
+        }
+        //large image (on details page):
+        imageUrlLg = data.image;
+
+        //small image (on search page):
+        imageUrlSm = imageUrlLg.replace('556x370', '480x360');
+
+        imageType = data.imageType;
+
+        nutrition = JSON.stringify(data.nutrition.nutrients);
+
+        if (data) {
+          console.log('start cooking');
 
           $.get(`/${id}/steps/:steps`).then(() => {
             window.location.replace(`/${id}/steps/1`);
@@ -157,11 +216,33 @@ $(document).ready(function() {
           // If the recipe is not available, alert the user with a modal:
           alert('The recipe for this meal is not available.');
         }
-
       }
     }).then(() => {
 
-      window.localStorage.setItem(id, JSON.stringify(stepsArray));
+      // Create recipe object:
+      recipe = {
+        id: id,
+        title: title,
+        vegetarian: vegetarian,
+        vegan: vegan,
+        veryHealthy: veryHealthy,
+        prepTime: prepTime,
+        servings: servings,
+        cuisines: cuisines,
+        imageUrlLg: imageUrlLg,
+        imageUrlSm: imageUrlSm,
+        imageType: imageType,
+        description: description,
+        diets: diets,
+        ingredients: ingredients,
+        nutrition: nutrition,
+        steps: steps,
+        sourceName: sourceName,
+        sourceUrl: sourceUrl
+      };
+
+      // add recipe to localStorage:
+      window.localStorage.setItem(id, JSON.stringify(recipe));
 
     });
 
