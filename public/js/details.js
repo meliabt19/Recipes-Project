@@ -223,6 +223,12 @@ const getNutritionTable = nutrition => {
 
 const getApiData = (id, startCooking) => {
 
+  if (startCooking === true) {
+    //If start cooking button was pressed, remove all content from the page:
+    $('.content').empty();
+  }
+
+  //Get API data:
   const query = `https://api.spoonacular.com/recipes/${id}/information?addRecipeInformation=true&includeNutrition=true&apiKey=${API_KEY}`;
 
   let recipe = {};
@@ -287,10 +293,7 @@ const getApiData = (id, startCooking) => {
         // Get the image file type:
         imageType = data.imageType;
 
-        if (startCooking === true) {
-          //If start cooking button was pressed, remove all content from the page:
-          $('.content').empty();
-        } else {
+        if (startCooking === false) {
           //If start cooking button was not pressed, output the data to the page:
           displayRecipeDetails(title, vegetarian, vegan, veryHealthy, prepTime,
             servings, description, imageUrlLg, sourceName, sourceUrl, cuisines,
