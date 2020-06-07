@@ -113,7 +113,6 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Max Calories:
                     <br>
-                    <span class="units">(kcal)</span>
                 </label>
                 <div class="col-sm-10">
                     <div class="slidecontainer">
@@ -122,16 +121,15 @@
                     </div>
                 </div>
             </div>
-        
+
             <!--Max carbs-->
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Max Carbs:
                     <br>
-                    <span class="units">(grams)</span>
                 </label>
                 <div class="col-sm-10">
                     <div class="slidecontainer">
-                        <span id="carb-output"></span>
+                        <span id="carb-output"></span> g
                         <input type="range" min="0" max="1000" value="500" class="slider" id="carb-range">
                     </div>
                 </div>
@@ -141,11 +139,10 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Max Fat:
                     <br>
-                    <span class="units">(grams)</span>
                 </label>
                 <div class="col-sm-10">
                     <div class="slidecontainer">
-                        <span id="fat-output"></span>
+                        <span id="fat-output"></span> g
                         <input type="range" min="0" max="100" value="50" class="slider" id="fat-range">
                     </div>
                 </div>
@@ -155,10 +152,9 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Max Sodium:
                     <br>
-                    <span class="units">(milligrams)</span>
                 </label>
                 <div class="col-sm-10">
-                    <input type="number" value="500" min="0" max="800" id="sodium">
+                    <input type="number" value="500" min="0" max="800" id="sodium"> mg
                 </div>
             </div>
 
@@ -166,10 +162,9 @@
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Max Sugar:
                     <br>
-                    <span class="units">(milligrams)</span>
                 </label>
                 <div class="col-sm-10">
-                    <input type="number" value="50" min="0" max="300" id="sugar">
+                    <input type="number" value="50" min="0" max="300" id="sugar"> mg
                 </div>
             </div>
 
@@ -252,12 +247,12 @@
         </form>
 
         <!--Search results-->
-            <div class="row">
-                <div class="col-12">
-                    <h3 id="no-recipes"></h3>
-                    <div id="advanced-search-results"></div>
-                </div>
+        <div class="row">
+            <div class="col-12">
+                <h3 id="no-recipes"></h3>
+                <div id="advanced-search-results"></div>
             </div>
+        </div>
 
     </div>
 
