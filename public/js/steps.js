@@ -259,6 +259,7 @@ const displayStep = (step, allIngredients) => {
 
   if (stepIngredients.length > 0) {
     ingredientsList = '<h4>Ingredients Needed:</h4>';
+    ingredientsList += getIngredientNames(stepIngredients);
     ingredientsList += getIngredients(stepDirections, stepIngredients, allIngredients);
   }
 
@@ -273,7 +274,7 @@ const displayStep = (step, allIngredients) => {
             <div class="row">
                 ${equipmentList}
             </div>
-            <div class="row">     
+            <div class="row">    
                 ${ingredientsList}
             </div>
             <div class="row">
@@ -282,6 +283,39 @@ const displayStep = (step, allIngredients) => {
             </div>
           </div>
           `;
+};
+
+const getIngredientNames = stepIngredients => {
+  console.log('step Ingredients: ', stepIngredients);
+
+  let stepIngredientNames = '';
+
+  for (let i = 0; i < stepIngredients.length; i++) {
+    const ingredient = stepIngredients[i].name;
+    if (i === 0) {
+      const firstLetter = ingredient.substring(0, 1);
+      const fLetterUppercase = firstLetter.toUpperCase();
+      const restOfName = ingredient.substring(1);
+      if (stepIngredients.length === 1) {
+        stepIngredientNames += `${fLetterUppercase}${restOfName}`;
+      } else {
+        stepIngredientNames += `${fLetterUppercase}${restOfName}, `;
+      }
+      //Initial caps on first word:
+
+    } else {
+      //add comma after all ingredients except last one:
+      if (i === stepIngredients.length - 1) {
+        stepIngredientNames += ingredient;
+      } else {
+        stepIngredientNames += `${ingredient}, `;
+      }
+    }
+
+  }
+
+  return `<p>${stepIngredientNames}</p>`;
+
 };
 
 const getIngredients = (stepDirections, stepIngredients, allIngredients) => {
