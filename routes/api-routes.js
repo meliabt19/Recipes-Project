@@ -102,4 +102,12 @@ module.exports = function(app) {
         res.status(401).json(err);
       });
   });
+
+  app.delete('/api/delete_recipe/:id', (req) => {
+    db.Recipe.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
+  });
 };
