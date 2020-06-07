@@ -79,7 +79,6 @@ $(document).ready(function() {
     } else {
       textInputError('#search-error-alert', '#search-error-msg', 'Invalid search field. Must be alphabetical and cannot contain punctuation marks.');
     }
-
   });
 });
 

@@ -26,7 +26,6 @@ $(document).ready(() => {
     fatOutput.text($(this).val());
   });
 
-
   $('#advanced-search').on('submit', (event) => {
 
     event.preventDefault();
@@ -35,7 +34,7 @@ $(document).ready(() => {
 
     const dishInput = $('#dish').val();
     const dishTrimmed = dishInput.trim();
-    const dishString = dishTrimmed.replace(/ /g, ',+');
+    let dishString = dishTrimmed.replace(/ /g, ',+');
 
     const cuisine = $('#cuisine').val();
 
@@ -80,9 +79,17 @@ $(document).ready(() => {
 
         const {length} = data.results;
 
+        console.log(data);
+
         if (length === 0) {
           $('#no-recipes').text('No found recipes, try again...');
         } else {
+
+          if (dishString !== '') {
+            dishString = dishString.replace(/,\+/g, ' ');
+            $('#advanced-search-results').append(`<h3>Search Results for "${dishString}":`);
+          }
+
           const results = data.results;
 
           results.forEach(rec => {
