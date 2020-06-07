@@ -20,24 +20,6 @@ $(document).ready(function() {
       const ingredients = JSON.parse(data.ingredients);
       const nutrition = JSON.parse(data.nutrition);
 
-      console.log('id : ', id);
-      console.log('title : ', title);
-      console.log('vegetarian : ', vegetarian);
-      console.log('vegan : ', vegan);
-      console.log('veryHealthy : ', veryHealthy);
-      console.log('prepTime : ', prepTime);
-      console.log('servings : ', servings);
-      console.log('description : ', description);
-      console.log('diets : ', diets);
-      console.log('ingredients : ', ingredients);
-      console.log('imageUrlLg : ', imageUrlLg);
-      console.log('cuisines : ', cuisines);
-      console.log('diets : ', diets);
-      console.log('ingredients : ', ingredients);
-      console.log('nutrition : ', nutrition);
-      console.log('sourceName : ', sourceName);
-      console.log('sourceUrl : ', sourceUrl);
-
       displayRecipeDetails(title, vegetarian, vegan, veryHealthy, prepTime,
         servings, description, imageUrlLg, sourceName, sourceUrl, cuisines,
         diets, ingredients, nutrition);
@@ -65,25 +47,6 @@ $(document).ready(function() {
         const ingredients = JSON.parse(data.ingredients);
         const nutrition = JSON.parse(data.nutrition);
         const steps = JSON.parse(data.steps);
-
-        console.log('id : ', id);
-        console.log('title : ', title);
-        console.log('vegetarian : ', vegetarian);
-        console.log('vegan : ', vegan);
-        console.log('veryHealthy : ', veryHealthy);
-        console.log('prepTime : ', prepTime);
-        console.log('servings : ', servings);
-        console.log('description : ', description);
-        console.log('diets : ', diets);
-        console.log('ingredients : ', ingredients);
-        console.log('steps: ', steps);
-        console.log('imageUrlLg : ', imageUrlLg);
-        console.log('cuisines : ', cuisines);
-        console.log('diets : ', diets);
-        console.log('ingredients : ', ingredients);
-        console.log('nutrition : ', nutrition);
-        console.log('sourceName : ', sourceName);
-        console.log('sourceUrl : ', sourceUrl);
 
         if (steps.length > 0) {
           console.log('recipe has steps');
@@ -260,10 +223,6 @@ const getNutritionTable = nutrition => {
 
 const getApiData = (id, startCooking) => {
 
-  if (startCooking === true) {
-    $('.content').empty();
-  }
-
   const query = `https://api.spoonacular.com/recipes/${id}/information?addRecipeInformation=true&includeNutrition=true&apiKey=${API_KEY}`;
 
   let recipe = {};
@@ -328,32 +287,15 @@ const getApiData = (id, startCooking) => {
         // Get the image file type:
         imageType = data.imageType;
 
-        //Add data to localStorage:
-        console.log('id: ' + id);
-        console.log('title: ' + title);
-        console.log('prepTime: ' + prepTime);
-        console.log('servings: ' + servings);
-        console.log('vegetarian: ' + vegetarian);
-        console.log('vegan: ' + vegan);
-        console.log('veryHealthy: ' + veryHealthy);
-        console.log('cuisines: ', cuisines);
-
-        console.log('diets: ' + diets);
-        console.log('description: ' + description);
-        console.log('ingredients: ', ingredients);
-        console.log('steps: ', steps);
-        console.log('imageUrlLg: ', imageUrlLg);
-        console.log('imageUrlSm: ', imageUrlSm);
-
-        console.log('nutrition: ', nutrition);
-        console.log('sourceName: ' + sourceName);
-        console.log('sourceUrl: ' + sourceUrl);
-
-
-        //Output the data to the page:
-        displayRecipeDetails(title, vegetarian, vegan, veryHealthy, prepTime,
-          servings, description, imageUrlLg, sourceName, sourceUrl, cuisines,
-          diets, ingredients, nutrition);
+        if (startCooking === true) {
+          //If start cooking button was pressed, remove all content from the page:
+          $('.content').empty();
+        } else {
+          //If start cooking button was not pressed, output the data to the page:
+          displayRecipeDetails(title, vegetarian, vegan, veryHealthy, prepTime,
+            servings, description, imageUrlLg, sourceName, sourceUrl, cuisines,
+            diets, ingredients, nutrition);
+        }
 
         // Convert objects and arrays to strings in order to enter them into localStorage:
         cuisines = JSON.stringify(cuisines);
