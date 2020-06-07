@@ -314,8 +314,8 @@ const getIngredientNames = stepIngredients => {
 
   }
 
-  console.log(stepIngredientNames);
   return `<p>${stepIngredientNames}</p>`;
+
 };
 
 const getIngredients = (stepDirections, stepIngredients, allIngredients) => {
