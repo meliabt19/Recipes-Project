@@ -6,8 +6,6 @@ $(document).ready(function() {
   let urlString = url.toString();
   urlString = urlString.replace('http://', '');
 
-  console.log(urlString);
-
   let step = getStep(urlString);
   step = parseInt(step);
 
@@ -60,6 +58,10 @@ $(document).ready(function() {
 
         storedRecipe = JSON.parse(storedRecipe);
 
+        //Add Recipe title:
+        const title = storedRecipe.title;
+        $('#title').text(title);
+
         const ingredients = JSON.parse(storedRecipe.ingredients);
 
         const recipeSteps = JSON.parse(storedRecipe.steps);
@@ -79,7 +81,7 @@ $(document).ready(function() {
 
       }
     }
-  });
+  }); // end $.get route
 
   $('#next-step').on('click', function() {
     event.preventDefault();
@@ -144,11 +146,11 @@ $(document).ready(function() {
             $.get(`/${id}/steps/:steps`).then(() => {
 
               window.location.replace(`/${id}/steps/${nextStep}`);
-            // If there's an error, log the error
+              // If there's an error, log the error
             }).catch(handleStepsErr);
 
           } else {
-          // Finished recipe steps
+            // Finished recipe steps
             window.localStorage.clear();
             window.location.replace('/members');
           }
@@ -163,7 +165,7 @@ $(document).ready(function() {
 
   $('#previous-step').on('click', function() {
 
-    $.get(`/api/details/${id}`, function(data) {
+    $.get(`/api/details/${userId}/${id}`, function(data) {
       console.log('recipe: ', data);
 
       if (data) {
@@ -229,7 +231,7 @@ $(document).ready(function() {
             $.get(`/${id}/steps/:steps`).then(() => {
 
               window.location.replace(`/${id}/steps/${previousStep}`);
-            // If there's an error, log the error
+              // If there's an error, log the error
             }).catch(handleStepsErr);
 
           } else {
