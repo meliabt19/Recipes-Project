@@ -10,9 +10,9 @@ $(document).ready(function() {
   $.get(`/api/details/${id}`, function(data) {
 
     if (data) {
-      //console.log('recipe: ', data);
+      console.log('recipe: ', data);
 
-      const { id, title, vegetarian, vegan, veryHealthy, prepTime,
+      const { title, vegetarian, vegan, veryHealthy, prepTime,
         servings, description, imageUrlLg, sourceName, sourceUrl } = data;
 
       const cuisines = JSON.parse(data.cuisines);
@@ -37,20 +37,12 @@ $(document).ready(function() {
     $.get(`/api/details/${id}`, function(data) {
 
       if (data) {
-        //console.log('recipe: ', data);
 
-        const { id, title, vegetarian, vegan, veryHealthy, prepTime,
-          servings, description, imageUrlLg, sourceName, sourceUrl } = data;
+        let steps = data.steps;
 
-        const cuisines = JSON.parse(data.cuisines);
-        const diets = JSON.parse(data.diets);
-        const ingredients = JSON.parse(data.ingredients);
-        const nutrition = JSON.parse(data.nutrition);
-        const steps = JSON.parse(data.steps);
-
-        if (steps.length > 0) {
+        if (steps !== '') {
           console.log('recipe has steps');
-
+          steps = JSON.parse(data.steps);
           beginRecipeSteps(id);
 
         } else {
@@ -59,10 +51,6 @@ $(document).ready(function() {
           alert('The recipe for this meal is not available.');
         }
 
-        displayRecipeDetails(title, vegetarian, vegan, veryHealthy, prepTime,
-          servings, description, imageUrlLg, sourceName, sourceUrl, cuisines,
-          diets, ingredients, nutrition);
-
       } else {
         console.log('recipe not found in database');
         const startCooking = true;
@@ -70,8 +58,9 @@ $(document).ready(function() {
 
       }
 
-    });
-  });
+    }); // end $.get route
+
+  }); // end start cooking click event
 
   $('.previous').on('click', function(event) {
     event.preventDefault();
@@ -223,11 +212,6 @@ const getNutritionTable = nutrition => {
 
 const getApiData = (id, startCooking) => {
 
-  if (startCooking === true) {
-    //If start cooking button was pressed, remove all content from the page:
-    $('.content').empty();
-  }
-
   //Get API data:
   const query = `https://api.spoonacular.com/recipes/${id}/information?addRecipeInformation=true&includeNutrition=true&apiKey=${API_KEY}`;
 
@@ -281,7 +265,7 @@ const getApiData = (id, startCooking) => {
           }
 
         } else {
-          steps = null;
+          steps = undefined;
         }
 
         //large image (on details page):
@@ -339,7 +323,8 @@ const getApiData = (id, startCooking) => {
     window.localStorage.setItem(id, JSON.stringify(recipe));
 
     if (startCooking === true) {
-      if (steps !== null) {
+      if (steps !== undefined) {
+        $('.content').empty();
         console.log('recipe has steps');
 
         beginRecipeSteps(id);
