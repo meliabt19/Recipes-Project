@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Recipe Book</title>
+  <title>Recipe Details</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css">
@@ -26,12 +26,13 @@
     </div>
   </nav>
   <div class="container-fluid">
+    <div class="content">
       <div class="row">  
         <div class="col-md-12">
           <button type="button" class="btn btn-primary my-1 previous">Go Back</button>
           <button type="submit" class="btn btn-primary my-1 start-cooking">Start Cooking</button>
         </div>
-      </div><!-- end row -->
+      </div>
       <div class="row">
         <div class="col-md-5 col-sm-12">
           <h1 id="recipe-title"></h1>
@@ -69,7 +70,7 @@
         </div>
       </div>
       <div class="row">
-        <div id="nutrients-table" class="col-md-12">
+        <div id="nutrition-table" class="col-md-12">
           <table class="table table-bordered table-striped table-hover">
             <thead>
               <tr>
@@ -87,12 +88,14 @@
             <p><a href="#" id="source-name" target="_blank"></a></p>
         </div>
       </div>
-    <div class="row">  
-      <div class="col-md-12">
-        <button type="button" class="btn btn-primary my-1 previous">Go Back</button>
-        <button type="submit" class="btn btn-primary my-1 start-cooking">Start Cooking</button>
-      </div>
-    </div><!-- end row -->
+      <div class="row">  
+        <div class="col-md-12">
+          <button type="button" class="btn btn-primary my-1 previous">Go Back</button>
+          <button type="submit" class="btn btn-primary my-1 start-cooking">Start Cooking</button>
+        </div>
+      </div><!-- end row -->
+    </div><!-- end content -->
+      
   </div><!-- end container-fluid -->
 
 
