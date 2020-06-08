@@ -165,7 +165,7 @@ $(document).ready(function() {
 
   $('#previous-step').on('click', function() {
 
-    $.get(`/api/details/${userId}/${id}`, function(data) {
+    $.get(`/api/details/${id}`, function(data) {
       console.log('recipe: ', data);
 
       if (data) {
