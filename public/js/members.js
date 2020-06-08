@@ -3,29 +3,41 @@ const API_KEY = '520acba345fb4fc582e4496d65f38cef';
 $(document).ready(function() {
   // This file just does a GET request to figure out which user is logged in
   // and updates the HTML on the page
-  $.get('/api/user_data').then(function(data) {
-    $('.member-name').text(', ' + data.fname);
-  });
 
-  $.get('/api/recipes').then(function(data) {
-    console.log('recipe data: ', data);
+  let userId;
 
-    if (data.length > 0) {
-      $('#content-container').append('<h3>My Recipe Book</h3>');
-
-      for (let i = 0; i < data.length; i++) {
-        const recipe = createMyRecipeCard(data[i]);
-        $('#content-container').append(recipe);
-      }
-
+  $.get('/api/user_data', function(data) {
+    if (data) {
+      $('.member-name').text(', ' + data.fname);
+      userId = data.id;
+      console.log('user id: ', userId);
     } else {
-      $('#content-container').append(`
-        <h3>My Recipe Book</h3>
-        <p>You do not currently have any recipes in your Recipes Book. 
-        Enter a search term in the Search box above and click search or
-        go to the Advanced search page and complete the form</p>
-      `);
+      console.log('user not found');
+      window.location.replace('/login');
     }
+  }).then(() => {
+
+    $.get(`/api/${userId}/recipes`).then(function(data) {
+      console.log('recipe data: ', data);
+
+      if (data.length > 0) {
+        $('#content-container').append('<h3>My Recipe Book</h3>');
+
+        for (let i = 0; i < data.length; i++) {
+          const recipe = createMyRecipeCard(data[i]);
+          $('#content-container').append(recipe);
+        }
+
+      } else {
+        $('#content-container').append(`
+          <h3>My Recipe Book</h3>
+          <p>You do not currently have any recipes in your Recipes Book. 
+          Enter a search term in the Search box above and click search or
+          go to the Advanced search page and complete the form</p>
+        `);
+      }
+    });
+
   });
 
   $('#global-search').on('submit', function(event) {
@@ -79,6 +91,7 @@ $(document).ready(function() {
     } else {
       textInputError('#search-error-alert', '#search-error-msg', 'Invalid search field. Must be alphabetical and cannot contain punctuation marks.');
     }
+
   });
 });
 
@@ -187,96 +200,108 @@ const createMyRecipeCard = recipe => {
 const addToRecipeBook = id => {
   event.preventDefault();
 
-  const query = `https://api.spoonacular.com/recipes/${id}/information?instructionsRequired=true&addRecipeInformation=true&includeNutrition=true&apiKey=${API_KEY}`;
-
-  let title, vegetarian, vegan, veryHealthy, prepTime,
+  let userId, title, vegetarian, vegan, veryHealthy, prepTime,
     servings, description, imageType, cuisines,
     diets, ingredients, steps, imageUrlLg, imageUrlSm,
     nutrition, sourceName, sourceUrl;
 
-  $.ajax({
-    url: query,
-    success: function(data) {
-
-      console.log('Recipe Details: ', data);
-
-      title = data.title;
-      vegetarian = data.vegetarian;
-      vegan = data.vegan;
-      veryHealthy = data.veryHealthy;
-      prepTime = data.readyInMinutes;
-      servings = data.servings;
-      description = data.summary;
-      sourceName = data.sourceName;
-      sourceUrl = data.sourceUrl;
-
-      cuisines = JSON.stringify(data.cuisines);
-      diets = JSON.stringify(data.diets);
-
-      ingredients = JSON.stringify(data.extendedIngredients);
-
-      if (data.analyzedInstructions.length > 0) {
-
-        const allSteps = data.analyzedInstructions;
-
-        steps = [];
-
-        for (let i = 0; i < allSteps.length; i++) {
-          for (let j = 0; j < allSteps[i].steps.length; j++) {
-            //console.log('step added: ', allSteps[i].steps[j]);
-            steps.push(allSteps[i].steps[j]);
-          }
-        }
-
-        //change the step number to sequence 1 - total:
-        for (let i = 0; i < steps.length; i++) {
-          steps[i].number = (i + 1);
-        }
-
-        steps = JSON.stringify(steps);
-
-      } else {
-        steps = null;
-      }
-
-      //large image (on details page):
-      imageUrlLg = data.image;
-
-      //small image (on search page):
-      imageUrlSm = imageUrlLg.replace('556x370', '480x360');
-
-      imageType = data.imageType;
-
-      nutrition = JSON.stringify(data.nutrition.nutrients);
-
+  $.get('/api/user_data', function(data) {
+    if (data) {
+      userId = data.id;
+      console.log('user id: ', userId);
+    } else {
+      console.log('user not found');
     }
   }).then(() => {
 
-    //Insert Recipe into database:
-    $.post('/api/add_recipe', {
-      id: id,
-      title: title,
-      vegetarian: vegetarian,
-      vegan: vegan,
-      veryHealthy: veryHealthy,
-      prepTime: prepTime,
-      servings: servings,
-      cuisines: cuisines,
-      imageUrlLg: imageUrlLg,
-      imageUrlSm: imageUrlSm,
-      imageType: imageType,
-      description: description,
-      diets: diets,
-      ingredients: ingredients,
-      nutrition: nutrition,
-      steps: steps,
-      sourceName: sourceName,
-      sourceUrl: sourceUrl
-    })
-      .catch(handleErr);
+    const query = `https://api.spoonacular.com/recipes/${id}/information?instructionsRequired=true&addRecipeInformation=true&includeNutrition=true&apiKey=${API_KEY}`;
 
-  }).then(() => {
-    alert('Recipe successfully added to your Recipe Book');
+    $.ajax({
+      url: query,
+      success: function(data) {
+
+        console.log('Recipe Details: ', data);
+
+        title = data.title;
+        vegetarian = data.vegetarian;
+        vegan = data.vegan;
+        veryHealthy = data.veryHealthy;
+        prepTime = data.readyInMinutes;
+        servings = data.servings;
+        description = data.summary;
+        sourceName = data.sourceName;
+        sourceUrl = data.sourceUrl;
+
+        cuisines = JSON.stringify(data.cuisines);
+        diets = JSON.stringify(data.diets);
+
+        ingredients = JSON.stringify(data.extendedIngredients);
+
+        if (data.analyzedInstructions.length > 0) {
+
+          const allSteps = data.analyzedInstructions;
+
+          steps = [];
+
+          for (let i = 0; i < allSteps.length; i++) {
+            for (let j = 0; j < allSteps[i].steps.length; j++) {
+            //console.log('step added: ', allSteps[i].steps[j]);
+              steps.push(allSteps[i].steps[j]);
+            }
+          }
+
+          //change the step number to sequence 1 - total:
+          for (let i = 0; i < steps.length; i++) {
+            steps[i].number = (i + 1);
+          }
+
+          steps = JSON.stringify(steps);
+
+        } else {
+          steps = null;
+        }
+
+        //large image (on details page):
+        imageUrlLg = data.image;
+
+        //small image (on search page):
+        imageUrlSm = imageUrlLg.replace('556x370', '480x360');
+
+        imageType = data.imageType;
+
+        nutrition = JSON.stringify(data.nutrition.nutrients);
+
+      }
+    }).then(() => {
+
+    //Insert Recipe into database:
+      $.post(`/api/${userId}/add_recipe`, {
+        id: id,
+        userId: userId,
+        title: title,
+        vegetarian: vegetarian,
+        vegan: vegan,
+        veryHealthy: veryHealthy,
+        prepTime: prepTime,
+        servings: servings,
+        cuisines: cuisines,
+        imageUrlLg: imageUrlLg,
+        imageUrlSm: imageUrlSm,
+        imageType: imageType,
+        description: description,
+        diets: diets,
+        ingredients: ingredients,
+        nutrition: nutrition,
+        steps: steps,
+        sourceName: sourceName,
+        sourceUrl: sourceUrl
+      })
+        .catch(handleErr);
+
+    }).then(() => {
+      alert('Recipe successfully added to your Recipe Book');
+    });
+
   });
 
 };
@@ -286,10 +311,21 @@ const viewRecipeDetails = id => {
   event.preventDefault();
   console.log(id);
 
-  $.get(`/details/${id}`).then(function() {
-    window.location.replace(`/details/${id}`);
-    // If there's an error, log the error
-  }).catch(handleErr);
+  let userId;
+
+  $.get('/api/user_data').then(function(data) {
+    if (data) {
+      userId = data.id;
+      console.log('user id: ', userId);
+    } else {
+      console.log('user not found');
+    }
+  }).then(() => {
+    $.get(`/details/${id}`).then(function() {
+      window.location.replace(`/details/${id}`);
+      // If there's an error, log the error
+    }).catch(handleErr);
+  });
 
 };
 
@@ -298,16 +334,30 @@ const deleteRecipe = id => {
   event.preventDefault();
   console.log(id);
 
-  $.ajax({
-    method: 'DELETE',
-    url: `/api/delete_recipe/${id}`,
-    success:
-      window.location.reload(true)
+  let userId;
+
+  $.get('/api/user_data').then(function(data) {
+    if (data) {
+      userId = data.id;
+      console.log('user id: ', userId);
+    } else {
+      console.log('user not found');
+    }
+  }).then(() => {
+
+    $.ajax({
+      method: 'DELETE',
+      url: `/api/delete_recipe/${userId}/${id}`,
+      success:
+        window.location.reload(true)
+    });
+
   });
+
 };
 
 const handleErr = err => {
-  console.log(err);
+  console.log(err.responseJSON.error);
 };
 
 const validateSearchInput = input => {
