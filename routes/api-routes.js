@@ -107,16 +107,4 @@ module.exports = function(app) {
       .catch(function(err) {
         res.status(401).json(err);
       });
-  });
 
-   // Route for deleting recipes from users recipe book
-   app.delete('/api/delete_recipe/:userId/:id', (req) => {
-    db.Recipe.destroy({
-      where: {
-        userId: req.params.userId,
-        id: req.params.id
-      }
-    });
-  });
-
-};
