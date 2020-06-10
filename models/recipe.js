@@ -2,11 +2,20 @@
 module.exports = function(sequelize, DataTypes) {
   const Recipe = sequelize.define('Recipe', {
     // Recipe Id:
+    orderId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
+    },
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
-      primaryKey: true
+    },
+    // User id:
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     // Recipe Title:
     title: {

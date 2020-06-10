@@ -55,19 +55,24 @@ module.exports = function(app) {
     }
   });
 
-  app.get('/api/recipes', function(req, res) {
-
-    db.Recipe.findAll({}).then(function(dbRecipe) {
-      res.json(dbRecipe);
-    });
-
+  app.get('/api/:userId/recipes', async (req, res) => {
+    try {
+      const recipes = await db.Recipe.findAll({
+        where: {
+          userId: req.params.userId
+        }
+      });
+      res.json(recipes);
+    } catch (err) {
+      res.json(err);
+    }
   });
 
   app.get('/api/details/:id', async (req, res) => {
     try {
       const recipe = await db.Recipe.findOne({
         where: {
-          id: req.params.id
+          id: req.params.id,
         }
       });
       res.json(recipe);
@@ -77,9 +82,10 @@ module.exports = function(app) {
     
   });
 
-  app.post('/api/add_recipe', function(req, res) {
+  app.post('/api/:userId/add_recipe', function(req, res) {
     db.Recipe.create({
       id: req.body.id,
+      userId: req.body.userId,
       title: req.body.title,
       vegetarian: req.body.vegetarian,
       vegan: req.body.vegan,
@@ -101,4 +107,4 @@ module.exports = function(app) {
       .catch(function(err) {
         res.status(401).json(err);
       });
-  });
+
